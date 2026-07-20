@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this manuscript, proof package, figures, or code, please cite Samuil Petkov."
+title: "Zero-Atom Right-Outlier Theory: Manuscript, Proofs, and Reproducibility Code"
+type: software
+version: 0.1.0
+date-released: 2026-07-20
+authors:
+  - family-names: Petkov
+    given-names: Samuil
+    email: petkov.sam@gmail.com
+    affiliation: Independent researcher
+repository-code: "https://github.com/SamPetkov/zero-atom-right-outliers"
+url: "https://github.com/SamPetkov/zero-atom-right-outliers"
+license: CC-BY-4.0
+keywords:
+  - random matrix theory
+  - sample covariance
+  - spectral outliers
+  - ReLU
+  - zero diagonal weights
+preferred-citation:
+  type: article
+  title: "Spectral Outliers of Self-Coupled Covariance Matrices with Exact Zero Weights"
+  authors:
+    - family-names: Petkov
+      given-names: Samuil
+  year: 2026
+  url: "https://github.com/SamPetkov/zero-atom-right-outliers"

@@ -1,0 +1,226 @@
+\documentclass[
+  aps,
+  prl,
+  reprint,
+  longbibliography,
+  nofootinbib
+]{revtex4-2}
+
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\input{macros}
+\hypersetup{
+  pdftitle={Spectral Outliers of Self-Coupled Covariance Matrices with Exact Zero Weights},
+  pdfauthor={Samuil Petkov},
+  pdfsubject={Physical Review Letters style manuscript on self-coupled sample covariance matrices with zero diagonal weights},
+  pdfkeywords={random matrix theory, sample covariance, spectral outliers, ReLU, zero weights}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+\title{Spectral Outliers of Self-Coupled Covariance Matrices with Exact Zero Weights}
+
+\author{Samuil Petkov}
+\email{petkov.sam@gmail.com}
+\affiliation{Independent researcher}
+
+\date{20 July 2026}
+
+\begin{abstract}
+Self-coupled sample covariance matrices arise when each sample is weighted by a function of the same low-dimensional coordinates that generate its signal. Existing effective outlier formulas require the diagonal weight matrix to be invertible and therefore exclude hard gates such as the derivative of a rectified linear unit. We prove that exact zero weights do not change the positive right-outlier equation when every nonzero weight is uniformly separated from zero. The proof deletes inactive columns before linearization, retains their random normalization, and applies the invertible theory to the exact truncated mark law of active samples. The limiting spectrum acquires the atom $(1-\phi\pi)_+$ at zero, while positive outliers are still the roots of a finite-dimensional determinant. We establish multiplicity-preserving eigenvalue counts, absence of spurious right outliers, projected-eigenvector normalization, an invariant-subspace formula at repeated roots, and the exact finite-dimensional kernel.
+\end{abstract}
+
+\maketitle
+
+Random covariance spectra separate macroscopic bulk behavior from finitely many signal-bearing outliers. In classical spiked models this separation is controlled by deterministic transforms of the bulk law and produces the Baik--Ben Arous--P\'ech\'e transition \cite{MarchenkoPastur1967,BBP2005,BenaychGeorgesNadakuditi2011}. A more recent class of models is \emph{self-coupled}: the diagonal weight of a sample depends on the same low-dimensional projection that enters the sample itself. Such matrices describe spectral estimators, information matrices, and blocks of neural-network curvature \cite{BenArousEtAl2025,KovacevicEtAl2025}.
+
+A general effective theory for Gaussian-mixture self-coupling was developed in Ref.~\cite{BenArousEtAl2025}. Its outlier proof linearizes a weighted covariance matrix using the inverse of the diagonal weights. Consequently, a hard gate---for example the derivative of a rectified linear unit (ReLU) \cite{NairHinton2010}---is excluded because it vanishes on a set of positive probability. We show that this singularity is algebraic rather than spectral: inactive columns can be removed exactly, without changing the effective equation for positive outliers.
+
+\emph{Model.---}
+Let $q$ be fixed and let $L_d\in\R^{d\times q}$ have orthonormal columns. For a class label $b_\ell\in\{1,\ldots,k\}$ with probabilities $(p_b)$, define
+\begin{equation}
+Y_\ell=L_d\!\left(m_{b_\ell}+\lambda^{-1/2}g_\ell\right)
+      +\lambda^{-1/2}L_d^\perp w_\ell ,
+\label{eq:Y}
+\end{equation}
+where $g_\ell\sim N(0,I_q)$ and $w_\ell\sim N(0,I_{d-q})$ are independent. Write $A_d=[Y_1\cdots Y_n]$, assume $n/d\to\phi\in(0,\infty)$, and set
+\begin{equation}
+D_{\ell\ell}=h_{b_\ell}(g_\ell),\qquad
+M_d=\frac1nA_dD A_d^{\mathsf T}.
+\label{eq:M}
+\end{equation}
+The weights are measurable and satisfy the zero-gap condition
+\begin{equation}
+h_b(g)\in\{0\}\cup[\tau,M]\quad\text{a.s.}
+\label{eq:gap}
+\end{equation}
+for fixed $0<\tau\le M<\infty$. Let
+\begin{equation}
+\pi_b=\Pp\{h_b(g)>0\},\qquad
+\pi=\sum_{b=1}^kp_b\pi_b,
+\label{eq:pi}
+\end{equation}
+and assume $\pi>0$. Rank-deficient signal Gram matrices are allowed; no inverse of the signal Gram matrix is used.
+
+Let $S(z)$ be the physical Stieltjes solution
+\begin{equation}
+1+zS(z)=
+\phi\sum_{b=1}^kp_b\E\!\left[
+\frac{S(z)h_b(g)}{\lambda\phi+S(z)h_b(g)}
+\right],
+\label{eq:Stieltjes}
+\end{equation}
+with $\operatorname{Im}S(z)>0$ for $\operatorname{Im}z>0$ and $zS(z)\to-1$. Denote its measure by $\nu$, its right edge by $\lambda_+=\sup\supp\nu$, and put
+\begin{align}
+v_b(g)&=m_b+\lambda^{-1/2}g,\\
+F(z)&=\lambda\phi\sum_{b=1}^kp_b\E\!\left[
+\frac{h_b(g)\,v_b(g)v_b(g)^{\mathsf T}}
+{\lambda\phi+S(z)h_b(g)}
+\right],\label{eq:F}\\
+B(z)&=zI_q-F(z).\label{eq:B}
+\end{align}
+
+\begin{theorem}[Zero-atom outlier theorem]
+\label{thm:main}
+Under \eqref{eq:Y}--\eqref{eq:gap}, the empirical spectral distribution of $M_d$ converges to $\nu$, and
+\begin{equation}
+\nu(\{0\})=(1-\phi\pi)_+.
+\label{eq:zeroatom}
+\end{equation}
+For every compact interval $I=[a,b]\subset(\lambda_+,\infty)$ whose endpoints are not zeros of $\det B$, with probability tending to one,
+\begin{equation}
+\#\{\sigma(M_d)\cap I\}
+=\#\{z\in I:\det B(z)=0\},
+\label{eq:count}
+\end{equation}
+with multiplicity. Every eigenvalue above $\lambda_++\epsilon$ approaches a bounded zero of $\det B$, and every isolated zero produces the corresponding number of empirical outliers.
+
+If $z_*$ is a simple zero and $u_d$ is its unit empirical eigenvector, then $r_d=L_d^{\mathsf T}u_d$ satisfies
+\begin{equation}
+B(z_d)r_d=o_{\Pp}(1),\qquad
+r_d^{\mathsf T}B'(z_d)r_d=1+o_{\Pp}(1).
+\label{eq:evec}
+\end{equation}
+At a zero of multiplicity $m$, let $K_*=\Ker B(z_*)$, let $P_*$ project onto $K_*$, and let $\Pi_d$ be the empirical spectral projection onto a small isolating interval. Then
+\begin{equation}
+L_d^{\mathsf T}\Pi_dL_d
+\xrightarrow{\Pp}
+P_*
+\left(\left.P_*B'(z_*)P_*\right|_{K_*}\right)^{-1}
+P_* .
+\label{eq:projection}
+\end{equation}
+Finally, for every finite $d$,
+\begin{equation}
+\rank M_d=\min(d,N_{\mathrm{act}})\quad\text{a.s.},
+\label{eq:rank}
+\end{equation}
+where $N_{\mathrm{act}}=\sum_{\ell}\1_{\{D_{\ell\ell}>0\}}$.
+\end{theorem}
+
+\emph{Exact active-column reduction.---}
+After permuting samples,
+\begin{equation}
+A_d=[A_+\ A_0],\qquad
+D=\begin{bmatrix}D_+&0\\0&0\end{bmatrix},
+\qquad \tau I\preceq D_+\preceq MI .
+\end{equation}
+Hence, identically at finite dimension,
+\begin{equation}
+M_d=\frac{N_{\mathrm{act}}}{n}\widehat M_d,\qquad
+\widehat M_d=\frac1{N_{\mathrm{act}}}A_+D_+A_+^{\mathsf T}.
+\label{eq:reduction}
+\end{equation}
+No inverse is taken on the inactive block.
+
+Conditioning on activity changes the signal coordinates. The exact active mark law is
+\begin{equation}
+\Pp_+(b,dg)=
+\frac{p_b\1_{\{h_b(g)>0\}}\gamma_q(dg)}{\pi},
+\label{eq:active-law}
+\end{equation}
+whereas $w$ remains an independent standard Gaussian. Thus the active columns are not, in general, an ordinary Gaussian mixture. This observation is essential: replacing \eqref{eq:active-law} by the unconditioned law would alter the low-rank term.
+
+The invertible-weight proof of Ref.~\cite{BenArousEtAl2025} extends to arbitrary fixed-dimensional marks $(T,V)$ satisfying $T\in[\tau,M]$ and finite moments, because the weighted-Wishart local law acts on the orthogonal Gaussian block, while the mark enters only through uniform empirical averages of
+\begin{equation}
+\frac{TVV^{\mathsf T}}{\lambda c+s_c(z)T},\qquad c=\phi\pi.
+\label{eq:marked}
+\end{equation}
+All uses of $D^{-1}$ then become legitimate uses of $D_+^{-1}$. Complete hypothesis-by-hypothesis details, including the random-size transfer, are given in the Supplemental Material \cite{Supplemental}.
+
+Let $s_+$ and $F_+$ denote the active bulk transform and effective matrix. The scalar factor in \eqref{eq:reduction} cannot be dropped:
+\begin{equation}
+S(z)=\frac1\pi s_+\!\left(\frac z\pi\right),\qquad
+F(z)=\pi F_+\!\left(\frac z\pi\right).
+\label{eq:scaling}
+\end{equation}
+Substitution into the active equations gives exactly \eqref{eq:Stieltjes} and \eqref{eq:F}; no correction term is generated by the atom at zero. Moreover,
+\begin{equation}
+\nu=(x\mapsto\pi x)_\#\nu_+,\qquad
+\lambda_+=\pi\lambda_{+,+},
+\label{eq:dilation}
+\end{equation}
+so support-edge stability is an exact dilation rather than an inference from weak convergence.
+
+\emph{Multiplicity and exclusion of spurious roots.---}
+For real $z>\lambda_+$,
+\begin{equation}
+S'(z)=\int\frac{\nu(dx)}{(x-z)^2}>0
+\end{equation}
+and differentiation of \eqref{eq:F} yields
+\begin{equation}
+F'(z)=
+-\lambda\phi S'(z)\sum_bp_b\E\!\left[
+\frac{h_b(g)^2v_b(g)v_b(g)^{\mathsf T}}
+{[\lambda\phi+S(z)h_b(g)]^2}
+\right]\preceq0.
+\label{eq:monotone}
+\end{equation}
+Consequently $B'(z)\succeq I_q$. Every ordered eigenvalue of $B(z)$ is strictly increasing, the total right-root multiplicity is at most $q$, and the analytic multiplicity of a root equals $\dim\Ker B(z_*)$. Uniform convergence of the empirical Schur complement on contours then preserves root counts by the argument principle. The no-outlier theorem for the active weighted-Wishart block excludes eigenvalues on compact root-free intervals. Tightness follows from
+\begin{equation}
+0\preceq M_d\preceq \frac{M}{n}A_dA_d^{\mathsf T}.
+\end{equation}
+
+\emph{Kernel and ReLU gates.---}
+Conditioned on activity, $(g,w)$ has a density and the affine map in \eqref{eq:Y} is nonsingular in $\R^d$. Independent active columns are therefore in general linear position almost surely, proving \eqref{eq:rank}. Since $N_{\mathrm{act}}/n\to\pi$ almost surely,
+\begin{equation}
+\frac1d\dim\Ker M_d\longrightarrow(1-\phi\pi)_+,
+\end{equation}
+which is exactly \eqref{eq:zeroatom}; these zero modes are not positive outliers.
+
+The theorem applies directly to
+\begin{equation}
+h_b(g)=a_b(g)\1_{\{\ell_b(g)>0\}},
+\qquad \tau\le a_b(g)\le M
+\end{equation}
+on the active half-space. For the pure gate, $h_b=\1_{\{\ell_b>0\}}$, $M_d$ is a half-space-gated empirical second moment. At a fixed non-kink parameter of a one-unit ReLU model $f_w(Y)=a\,\max(w^{\mathsf T}Y,0)$, it is, up to $a^2$, the $w$--$w$ Jacobian-Gram or Gauss--Newton block.
+
+Figure~\ref{fig:outlier} illustrates a noncentered scalar gate. The active conditional moment predicts an outlier at $4.6653$, separated from the bulk edge $2$. Direct simulations approach the prediction while the associated eigenvectors retain large overlap with the summary direction. The calculation is diagnostic only; the proof is analytic.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.70\textwidth]{figures/noncentered_outlier_check.png}
+\caption{\label{fig:outlier}
+Largest eigenvalue for the gate $h(g)=\1_{\{g>0\}}$ with $\phi=2$, $\lambda=1$, and summary mean $m=2$. The effective determinant predicts $z_{\rm out}=4.6653$ and the bulk edge is $2$. The master seed is 20260720.}
+\end{figure*}
+
+The zero-gap assumption is sharp for the present reduction: it makes $D_+^{-1}$ uniformly bounded. Signed weights and positive weights accumulating continuously at zero require a different stability analysis. The active-column mechanism nevertheless isolates the singular part exactly and shows that hard ReLU gates create a zero atom, not additional positive outliers.
+
+\begin{acknowledgments}
+OpenAI GPT-5.6 Pro was used substantively for literature synthesis, proof drafting, code generation, numerical checking, and manuscript preparation under the author's direction. The numerical output was checked by deterministic assertions supplied with the repository. The author is responsible for independent verification of all mathematical claims before journal submission.
+\end{acknowledgments}
+
+\paragraph*{Data availability.}
+The manuscript source, complete technical report, code, seeds, numerical outputs, and figures are intended for public release at \RepositoryURL\ under the Creative Commons Attribution 4.0 International license \cite{PetkovRepository}.
+
+\bibliography{references}
+
+\end{document}

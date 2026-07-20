@@ -1,0 +1,139 @@
+{
+  "metadata": {
+    "master_seed": 20260720,
+    "child_seeds": [
+      5744288171733796563,
+      5771397660690495051,
+      8719813505813925901,
+      536763270243181876,
+      354822120473787460
+    ],
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8"
+  },
+  "bernoulli_thinning": {
+    "d": 320,
+    "n": 640,
+    "phi": 2.0,
+    "pi": 0.4,
+    "lambda": 1.5,
+    "N_active": 254,
+    "active_fraction": 0.396875,
+    "numerical_rank": 254,
+    "predicted_rank": 254,
+    "numerical_nullity": 66,
+    "predicted_nullity": 66,
+    "predicted_zero_mass": 0.19999999999999996,
+    "empirical_zero_mass": 0.20625,
+    "edge_minus": 0.0037152060000560827,
+    "edge_plus": 1.1962847939999437,
+    "largest_nonoutlying_eigenvalue": 1.1641117345309075,
+    "stieltjes_test_residual": 2.387624894196368e-16,
+    "stieltjes_test_imaginary_part": 0.49770012493538396,
+    "large_z_normalization_error": 1.8834372928305772e-07
+  },
+  "centered_pure_gate": {
+    "d": 320,
+    "n": 640,
+    "phi": 2.0,
+    "lambda": 1.0,
+    "gate_fraction": 0.4796875,
+    "independent_fraction": 0.5234375,
+    "predicted_right_edge": 2.0,
+    "pure_gate_top_eigenvalue": 1.9728301607808718,
+    "independent_thinning_top_eigenvalue": 2.0093175549290887,
+    "mean_absolute_quantile_difference": 0.04651261786867045,
+    "pure_gate_zero_mass": 0.040625,
+    "independent_zero_mass": 0.0
+  },
+  "noncentered_gate": {
+    "parameters": {
+      "phi": 2.0,
+      "lambda": 1.0,
+      "m": 2.0,
+      "a": 0.0,
+      "b": 1.0
+    },
+    "prediction": {
+      "delta": 0.0,
+      "pi": 0.5,
+      "normal_pdf_delta": 0.3989422804014327,
+      "conditional_mean_g": 0.7978845608028654,
+      "conditional_second_moment_g": 1.0,
+      "beta": 8.191538243211461,
+      "bbp_threshold": 2.0,
+      "right_edge": 2.0,
+      "predicted_outlier": 4.665295276246149
+    },
+    "dimensions": [
+      100,
+      160,
+      240,
+      340
+    ],
+    "empirical_top_eigenvalues": [
+      4.5423129096174,
+      4.478092375694941,
+      4.866458954945812,
+      4.521329452932052
+    ],
+    "summary_direction_squared_overlaps": [
+      0.8574111884762015,
+      0.8752038366691464,
+      0.8674888114001684,
+      0.8504181690777871
+    ],
+    "active_fractions": [
+      0.485,
+      0.509375,
+      0.50625,
+      0.49558823529411766
+    ],
+    "scalar_determinant_residual_at_prediction": 1.6151075237182336e-10
+  },
+  "regularization": {
+    "d": 260,
+    "n": 520,
+    "inactive_fraction": 0.47692307692307695,
+    "inactive_covariance_norm": 1.8725665164277192,
+    "full_covariance_norm_bound_constant": 2.895076377248965,
+    "checks": [
+      {
+        "epsilon": 0.005,
+        "actual_norm": 0.009362832582138601,
+        "epsilon_times_inactive_norm": 0.009362832582138596,
+        "absolute_identity_error": 5.204170427930421e-18
+      },
+      {
+        "epsilon": 0.01,
+        "actual_norm": 0.018725665164277202,
+        "epsilon_times_inactive_norm": 0.01872566516427719,
+        "absolute_identity_error": 1.0408340855860843e-17
+      },
+      {
+        "epsilon": 0.02,
+        "actual_norm": 0.03745133032855439,
+        "epsilon_times_inactive_norm": 0.03745133032855438,
+        "absolute_identity_error": 6.938893903907228e-18
+      },
+      {
+        "epsilon": 0.05,
+        "actual_norm": 0.09362832582138597,
+        "epsilon_times_inactive_norm": 0.09362832582138597,
+        "absolute_identity_error": 0.0
+      },
+      {
+        "epsilon": 0.1,
+        "actual_norm": 0.18725665164277194,
+        "epsilon_times_inactive_norm": 0.18725665164277194,
+        "absolute_identity_error": 0.0
+      }
+    ]
+  },
+  "two_implementations": {
+    "column_matrix_max_abs_difference": 3.552713678800501e-15,
+    "weighted_covariance_operator_difference": 1.9271255189273967e-15
+  }
+}

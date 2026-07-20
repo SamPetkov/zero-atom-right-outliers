@@ -1,0 +1,4 @@
+# Versions used for the recorded run in results/zero_atom_results.json
+numpy==2.3.5
+scipy==1.17.0
+matplotlib==3.10.8

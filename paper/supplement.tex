@@ -1,0 +1,778 @@
+\documentclass[
+  aps,
+  prl,
+  10pt,
+  onecolumn,
+  longbibliography,
+  nofootinbib
+]{revtex4-2}
+
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\input{macros}
+\hypersetup{
+  pdftitle={Supplemental Material: Spectral Outliers of Self-Coupled Covariance Matrices with Exact Zero Weights},
+  pdfauthor={Samuil Petkov},
+  pdfsubject={Complete proofs and reproducibility details for the zero-atom outlier theorem},
+  pdfkeywords={random matrix theory, sample covariance, spectral outliers, ReLU, supplementary material}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\begin{document}
+
+\title{Supplemental Material for ``Spectral Outliers of Self-Coupled Covariance Matrices with Exact Zero Weights''}
+
+\author{Samuil Petkov}
+\email{petkov.sam@gmail.com}
+\affiliation{Independent researcher}
+\date{20 July 2026}
+
+\maketitle
+
+This supplement gives the complete active-column reduction, the exact conditional law, the marked extension of the invertible-weight theorem, all deterministic scaling identities, root-multiplicity arguments, eigenvalue-count transfer, eigenvector and spectral-projection formulas, the ReLU corollary, and reproducible checks.
+
+\section{Model and complete theorem}
+
+Fix $k,C,q\in\mathbb{N}$ with $q=C+k$, $\lambda>0$, $\phi>0$, probabilities $p_b>0$ summing to one, and a positive-semidefinite matrix $G\in\R^{q\times q}$. For each large $d$, let
+\begin{equation}
+B_d=[x_1^{(d)},\ldots,x_C^{(d)},\mu_1^{(d)},\ldots,\mu_k^{(d)}]
+\end{equation}
+satisfy $B_d^{\mathsf T}B_d=G$. Choose $L_d\in\R^{d\times q}$ with orthonormal columns and
+\begin{equation}
+L_d^{\mathsf T}B_d=\sqrt G .
+\end{equation}
+No inverse of $G$ or $\sqrt G$ is used. If $G$ is rank deficient, unused columns of $L_d$ may be chosen arbitrarily outside $\operatorname{span}B_d$.
+
+For class $b$, let $m_b=L_d^{\mathsf T}\mu_b^{(d)}$. Independently over $\ell$ sample
+\begin{equation}
+b_\ell\sim\operatorname{Cat}(p_1,\ldots,p_k),\quad
+g_\ell\sim N(0,I_q),\quad
+w_\ell\sim N(0,I_{d-q}),
+\end{equation}
+and define
+\begin{equation}
+Y_\ell
+=L_d\!\left(m_{b_\ell}+\lambda^{-1/2}g_\ell\right)
++\lambda^{-1/2}L_d^\perp w_\ell.
+\label{S:Y}
+\end{equation}
+Let $A_d=[Y_1\cdots Y_n]$, with $n/d\to\phi$, and let
+\begin{equation}
+D_{\ell\ell}=h_{b_\ell}(g_\ell),\qquad
+M_d=\frac1nA_dDA_d^{\mathsf T},
+\label{S:M}
+\end{equation}
+where $h_b:\R^q\to[0,M]$ is measurable and
+\begin{equation}
+h_b(g)\in\{0\}\cup[\tau,M]\quad\text{a.s.}
+\label{S:gap}
+\end{equation}
+for some $\tau>0$. Put
+\begin{equation}
+\pi_b=\Pp\{h_b(g)>0\},\qquad
+\pi=\sum_{b=1}^kp_b\pi_b.
+\label{S:pi}
+\end{equation}
+
+Let $S_G$ be the physical Stieltjes branch
+\begin{equation}
+1+zS_G(z)=
+\phi\sum_{b=1}^kp_b
+\E\!\left[
+\frac{S_G(z)h_b(g)}
+{\lambda\phi+S_G(z)h_b(g)}
+\right],
+\label{S:fixedpoint}
+\end{equation}
+with $\operatorname{Im}S_G(z)>0$ for $\operatorname{Im}z>0$ and
+$zS_G(z)\to-1$. Let $\nu_G$ be its probability measure and
+\begin{equation}
+\lambda_+(G)=\sup\supp\nu_G.
+\end{equation}
+For
+\begin{equation}
+v_b(g)=m_b+\lambda^{-1/2}g,
+\end{equation}
+define, outside the support,
+\begin{equation}
+F_G(z)=
+\lambda\phi\sum_{b=1}^kp_b
+\E\!\left[
+\frac{h_b(g)}
+{\lambda\phi+S_G(z)h_b(g)}
+v_b(g)v_b(g)^{\mathsf T}
+\right],
+\label{S:F}
+\end{equation}
+and $B_G(z)=zI_q-F_G(z)$.
+
+\begin{theorem}[Complete zero-atom theorem]
+\label{S:main}
+If $\pi=0$, then $M_d=0$ almost surely and all assertions reduce to
+$\nu_G=\delta_0$, $S_G(z)=-1/z$, and $F_G=0$. Assume $\pi>0$.
+\begin{enumerate}
+\item The empirical spectral distribution of $M_d$ converges weakly in probability to $\nu_G$, and
+\begin{equation}
+\nu_G(\{0\})=(1-\phi\pi)_+.
+\label{S:zeroatom}
+\end{equation}
+
+\item For every compact $K\subset(\lambda_+(G),\infty)$,
+\begin{equation}
+\essinf_{\substack{z\in K,\,b\in[k]\\g:\,h_b(g)>0}}
+\left|\lambda\phi+S_G(z)h_b(g)\right|>0.
+\label{S:denominator}
+\end{equation}
+Hence $F_G$ and $B_G$ are real analytic to the right of the bulk.
+
+\item Let $I=[a,b]\subset(\lambda_+(G),\infty)$ and assume
+$\det B_G(a)\det B_G(b)\ne0$. Then, with probability tending to one,
+\begin{equation}
+\#\{\sigma(M_d)\cap I\}
+=
+\#\{z\in I:\det B_G(z)=0\},
+\label{S:count}
+\end{equation}
+with algebraic and analytic multiplicity.
+
+\item For each root $z_*>\lambda_+(G)$,
+\begin{equation}
+\operatorname{ord}_{z_*}\det B_G(z)=\dim\Ker B_G(z_*).
+\label{S:multiplicity}
+\end{equation}
+The sum of right-root multiplicities is at most $q$.
+
+\item Every isolated root of multiplicity $m$ attracts exactly $m$ empirical eigenvalues. Conversely, for every $\epsilon>0$, all empirical eigenvalues above $\lambda_+(G)+\epsilon$ lie within $o_{\Pp}(1)$ of a bounded effective root.
+
+\item If $z_*$ is simple, $z_d\to z_*$ is its empirical eigenvalue, $u_d$ is a unit eigenvector, and $r_d=L_d^{\mathsf T}u_d$, then
+\begin{align}
+\|B_G(z_d)r_d\|&=o_{\Pp}(1),\label{S:evec1}\\
+\left|r_d^{\mathsf T}B_G'(z_d)r_d-1\right|&=o_{\Pp}(1).
+\label{S:evec2}
+\end{align}
+If $e_*$ is a unit vector spanning $\Ker B_G(z_*)$, then after sign choice,
+\begin{equation}
+r_d\xrightarrow{\Pp}
+\frac{e_*}{\sqrt{e_*^{\mathsf T}B_G'(z_*)e_*}}.
+\label{S:eveclimit}
+\end{equation}
+
+\item If $z_*$ has multiplicity $m>1$, choose an isolating interval and let $\Pi_d$ be the corresponding empirical spectral projection. Let
+\begin{equation}
+K_*=\Ker B_G(z_*),\quad P_*=\operatorname{Proj}_{K_*},\quad
+J_*=\left.P_*B_G'(z_*)P_*\right|_{K_*}.
+\end{equation}
+Then $J_*\succ0$, $\rank\Pi_d=m$ with probability tending to one, and
+\begin{equation}
+L_d^{\mathsf T}\Pi_dL_d
+\xrightarrow{\Pp}P_*J_*^{-1}P_*.
+\label{S:projection}
+\end{equation}
+
+\item For every finite $d$, almost surely,
+\begin{equation}
+\rank M_d=\min(d,N_{\mathrm{active}}),\qquad
+N_{\mathrm{active}}=\sum_{\ell=1}^n\1_{\{D_{\ell\ell}>0\}}.
+\label{S:rank}
+\end{equation}
+Consequently,
+\begin{equation}
+\frac1d\dim\Ker M_d\longrightarrow(1-\phi\pi)_+
+\quad\text{almost surely}.
+\label{S:nullity}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\section{Exact active-column reduction}
+
+Define
+\begin{equation}
+T_\ell=h_{b_\ell}(g_\ell),\qquad
+I_\ell=\1_{\{T_\ell>0\}},\qquad
+N_d=\sum_{\ell=1}^nI_\ell .
+\end{equation}
+After a column permutation,
+\begin{equation}
+A_d=[A_{+,d}\ A_{0,d}],\qquad
+D=\begin{bmatrix}D_{+,d}&0\\0&0\end{bmatrix},
+\end{equation}
+where $D_{+,d}$ is $N_d\times N_d$ and
+\begin{equation}
+\tau I\preceq D_{+,d}\preceq MI.
+\end{equation}
+Therefore
+\begin{equation}
+M_d
+=\frac1nA_{+,d}D_{+,d}A_{+,d}^{\mathsf T}
+=\frac{N_d}{n}\widehat M_d,
+\qquad
+\widehat M_d=
+\frac1{N_d}A_{+,d}D_{+,d}A_{+,d}^{\mathsf T}.
+\label{S:activeidentity}
+\end{equation}
+This is an exact finite-dimensional identity. The inactive columns are absent before any determinant identity, Schur complement, or resolvent is introduced.
+
+\begin{lemma}[Conditional active law]
+\label{S:active-law-lemma}
+Conditioned on activity, the low-dimensional mark has law
+\begin{equation}
+\Pp_+(b,dg)=
+\frac{p_b\1_{\{h_b(g)>0\}}\gamma_q(dg)}{\pi},
+\label{S:active-law}
+\end{equation}
+and $w$ remains an independent standard Gaussian. Conditioned on $N_d=m$, the unordered active columns are distributed as $m$ independent draws from this active law.
+\end{lemma}
+
+\begin{proof}
+The activity event is measurable with respect to $(b,g)$ and independent of $w$. Thus
+\begin{equation}
+\Pp\{b\in db,g\in dg,w\in dw\mid I=1\}
+=
+\frac{p_b\1_{\{h_b(g)>0\}}\gamma_q(dg)}{\pi}
+\gamma_{d-q}(dw).
+\end{equation}
+Independence across sample indices is preserved under coordinatewise conditioning. Given the number of successes, exchangeability makes their positions uniform, and the unordered successful marks are independent with law \eqref{S:active-law}.
+\end{proof}
+
+\begin{remark}
+The active $g$ is generally truncated or reweighted. It must not be replaced by an unconditioned Gaussian vector. This is the first point at which a naive reduction fails.
+\end{remark}
+
+Because $I_\ell$ are independent Bernoulli variables of mean $\pi$,
+\begin{equation}
+\frac{N_d}{n}\to\pi,\qquad
+\frac{N_d}{d}\to\phi\pi
+\label{S:active-ratios}
+\end{equation}
+almost surely, for example by Hoeffding's inequality and Borel--Cantelli.
+
+\section{Marked extension of the invertible-weight theorem}
+
+The source theorem of Ref.~\cite{BenArousEtAl2025} treats a weighted covariance matrix whose diagonal weights are bounded away from zero. Its proof isolates a fixed-dimensional summary block and an independent high-dimensional Gaussian block. The extension needed after conditioning is that the fixed-dimensional mark need not itself be Gaussian.
+
+\begin{proposition}[Invertible covariance with fixed-dimensional marks]
+\label{S:marked-theorem}
+Let $m_d/d\to c\in(0,\infty)$. Let $(T_i,V_i)_{i\le m_d}$ be i.i.d. with
+\begin{equation}
+T_i\in[\tau,M]\quad\text{a.s.},\qquad
+V_i\in\R^q,\qquad
+\E\|V_i\|^r<\infty\quad(r<\infty).
+\end{equation}
+Let $W_i\sim N(0,I_{d-q})$ be i.i.d. and independent of the marks. Define
+\begin{equation}
+Y_i=LV_i+\lambda^{-1/2}L^\perp W_i,\qquad
+\widehat M_d=\frac1{m_d}\sum_{i=1}^{m_d}T_iY_iY_i^{\mathsf T}.
+\end{equation}
+Then the invertible-weight bulk, outlier-count, and projected-eigenvector conclusions of Ref.~\cite{BenArousEtAl2025} remain valid, with
+\begin{equation}
+1+zs_c(z)
+=
+c\,\E\!\left[
+\frac{s_c(z)T}{\lambda c+s_c(z)T}
+\right]
+\label{S:marked-fixed}
+\end{equation}
+and
+\begin{equation}
+F_c(z)
+=
+\lambda c\,\E\!\left[
+\frac{T}{\lambda c+s_c(z)T}VV^{\mathsf T}
+\right].
+\label{S:marked-F}
+\end{equation}
+The characteristic determinants and compressed resolvents converge locally uniformly on deterministic compact subsets separated from the limiting bulk.
+\end{proposition}
+
+\begin{proof}
+Write
+\begin{equation}
+\sqrt{\frac{\lambda}{d}}Y_i
+=
+L\!\left(\sqrt{\frac{\lambda}{d}}V_i\right)
++
+L^\perp\frac{W_i}{\sqrt d}.
+\end{equation}
+The orthogonal block is an i.i.d. Gaussian matrix independent of the bounded diagonal $T$. The weighted-Wishart local law and no-outlier theorem in Ref.~\cite{BenArousEtAl2025} apply to this block without reference to Gaussianity of $V$.
+
+The empirical law of $T$ converges almost surely. Its empirical support converges to the compact support of the law: for each $\epsilon>0$, cover the support by finitely many balls of positive probability; the probability that any one is missed is exponentially small in $m_d$, and Borel--Cantelli applies.
+
+The reduced matrix in the source proof is
+\begin{equation}
+F_d(z)
+=
+\frac{\lambda}{d}
+\sum_{i=1}^{m_d}
+\frac{T_iV_iV_i^{\mathsf T}}
+{1+\widetilde S_d(z)T_i},
+\label{S:empirical-F}
+\end{equation}
+where $\widetilde S_d$ is the transform in the source scaling. Uniform laws of large numbers for \eqref{S:empirical-F} require only the displayed moment assumption and denominator separation on the chosen spectral compact set. The source proof's fourth-moment estimates and triangular-array equicontinuity therefore remain unchanged. The expectation-identification step becomes directly
+\begin{equation}
+F_d(z)\longrightarrow
+\lambda c\,\E\!\left[
+\frac{T}{1+\widetilde S(z)T}VV^{\mathsf T}
+\right],
+\end{equation}
+by dominated convergence.
+
+Since $T\ge\tau$, the source linearization and all Schur complements involving $T^{-1}$ are valid. The anisotropic deterministic equivalent is applied only to random directions generated by the mark block, which is independent of the orthogonal Gaussian block. Uniform convergence of the characteristic determinant gives analytic root counts by the argument principle. Differentiation of the Schur complement gives the projected-eigenvector normalization, and uniform convergence of the compressed resolvent on an isolating contour gives the projection statement.
+
+Rescaling the source matrix by $\lambda c$ yields \eqref{S:marked-fixed}--\eqref{S:marked-F}.
+\end{proof}
+
+\subsection{Audit of every use of the inverse}
+
+The source proof uses the diagonal inverse only in the following mechanisms:
+\begin{enumerate}
+\item the lower-right block of the weighted-Wishart linearization;
+\item the Schur complement producing the characteristic determinant;
+\item the relation between the primal eigenvector and the linearization vector;
+\item differentiation of the active Schur complement for the norm identity.
+\end{enumerate}
+After \eqref{S:activeidentity}, each occurrence is an inverse of $D_{+,d}$ and is bounded by $\tau^{-1}$. The source bulk theorem itself does not require this inverse and already permits a zero atom. No Moore--Penrose substitution is made.
+
+\section{Bulk law, exact scaling, and the zero atom}
+
+Under the active law \eqref{S:active-law}, set
+\begin{equation}
+T=h_b(g),\qquad V=m_b+\lambda^{-1/2}g,\qquad c=\phi\pi.
+\end{equation}
+Let $s_+$ solve
+\begin{equation}
+1+xs_+(x)
+=
+c\,\E_+\!\left[
+\frac{s_+(x)T}{\lambda c+s_+(x)T}
+\right].
+\label{S:active-fixed}
+\end{equation}
+Define
+\begin{equation}
+S(z)=\frac1\pi s_+\!\left(\frac z\pi\right).
+\label{S:Sscale}
+\end{equation}
+Since
+\begin{equation}
+\E_+[f(b,g)]
+=
+\frac1\pi\sum_bp_b
+\E\!\left[\1_{\{h_b(g)>0\}}f(b,g)\right],
+\end{equation}
+substitution in \eqref{S:active-fixed} yields \eqref{S:fixedpoint}. Inactive terms vanish because the numerator is zero; no inverse of zero is used.
+
+If $\nu_+$ is the active bulk measure, then
+\begin{equation}
+\nu_G=(x\mapsto\pi x)_\#\nu_+,
+\qquad
+\supp\nu_G=\pi\,\supp\nu_+,
+\qquad
+\lambda_+(G)=\pi\lambda_{+,+}.
+\label{S:pushforward}
+\end{equation}
+This exact pushforward supplies the right-edge statement without invoking continuity of support under weak convergence.
+
+For the effective matrix,
+\begin{equation}
+F_+(x)=
+\lambda c\,\E_+\!\left[
+\frac{T}{\lambda c+s_+(x)T}VV^{\mathsf T}
+\right].
+\end{equation}
+Using $c=\phi\pi$ and \eqref{S:Sscale},
+\begin{equation}
+F_G(z)=\pi F_+\!\left(\frac z\pi\right),
+\label{S:Fscale}
+\end{equation}
+which expands exactly to \eqref{S:F}. Hence
+\begin{equation}
+\det B_G(z)
+=
+\pi^q\det\!\left[
+\frac z\pi I_q-F_+\!\left(\frac z\pi\right)
+\right].
+\label{S:detscale}
+\end{equation}
+Roots and analytic multiplicities correspond bijectively under $z=\pi x$.
+
+\begin{lemma}[Zero mass]
+The limiting measure satisfies \eqref{S:zeroatom}.
+\end{lemma}
+
+\begin{proof}
+The rank theorem proved below gives the lower bound
+\begin{equation}
+\nu_G(\{0\})\ge(1-\phi\pi)_+.
+\end{equation}
+Alternatively, the same lower bound follows from \eqref{S:pushforward} and the standard active covariance rank deficit.
+
+Let $m_0=\nu_G(\{0\})$. For $t\downarrow0$,
+\begin{equation}
+tS_G(-t)\longrightarrow m_0.
+\end{equation}
+If $m_0>0$, then $S_G(-t)\to+\infty$. Dominated convergence in \eqref{S:fixedpoint} gives
+\begin{equation}
+1-m_0=\phi\sum_bp_b\Pp\{h_b(g)>0\}=\phi\pi.
+\end{equation}
+Thus $m_0=1-\phi\pi$ when $\phi\pi<1$. If $\phi\pi\ge1$, a positive $m_0$ would imply $1-m_0=\phi\pi\ge1$, which is impossible. Therefore $m_0=(1-\phi\pi)_+$.
+\end{proof}
+
+\section{Exact rank and kernel}
+
+\begin{lemma}[General position of active columns]
+Conditioned on activity, each $Y_\ell$ has an absolutely continuous law on $\R^d$. Independent active columns are in general linear position almost surely.
+\end{lemma}
+
+\begin{proof}
+Under \eqref{S:active-law}, $g$ has a density on its active set, and $w$ remains a full standard Gaussian. For each class $b$, the affine orthogonal map
+\begin{equation}
+(g,w)\mapsto
+L_d(m_b+\lambda^{-1/2}g)
++\lambda^{-1/2}L_d^\perp w
+\end{equation}
+has nonsingular linear part. Its image law is absolutely continuous on $\R^d$. Inductively, conditioned on the first $r<d$ active columns, their span is a proper linear subspace and hence has Lebesgue measure zero. The next active column avoids it almost surely.
+\end{proof}
+
+Therefore
+\begin{equation}
+\rank A_{+,d}=\min(d,N_d)\quad\text{a.s.}
+\end{equation}
+Since $D_{+,d}^{1/2}$ is invertible,
+\begin{equation}
+\rank M_d
+=\rank(A_{+,d}D_{+,d}^{1/2})
+=\min(d,N_d)
+\end{equation}
+almost surely. Equation \eqref{S:nullity} follows from \eqref{S:active-ratios}. The exact zeros are the finite-dimensional realization of the atom \eqref{S:zeroatom}; they are not positive outliers.
+
+\section{Analyticity and root multiplicity}
+
+On a compact set to the right of the active bulk, Proposition~\ref{S:marked-theorem} supplies
+\begin{equation}
+\essinf_T|\lambda c+s_+(x)T|>0.
+\end{equation}
+Equations \eqref{S:Sscale} and \eqref{S:Fscale} imply \eqref{S:denominator}. Thus $F_G$ is real analytic on $(\lambda_+,\infty)$.
+
+For real $z>\lambda_+$,
+\begin{equation}
+S_G'(z)=\int\frac{\nu_G(dx)}{(x-z)^2}>0.
+\label{S:Sprime}
+\end{equation}
+Differentiating \eqref{S:F},
+\begin{equation}
+F_G'(z)=
+-\lambda\phi S_G'(z)\sum_bp_b\E\!\left[
+\frac{h_b(g)^2v_b(g)v_b(g)^{\mathsf T}}
+{[\lambda\phi+S_G(z)h_b(g)]^2}
+\right]\preceq0.
+\label{S:Fprime}
+\end{equation}
+Hence
+\begin{equation}
+B_G'(z)=I_q-F_G'(z)\succeq I_q.
+\label{S:Bprime}
+\end{equation}
+Every ordered eigenvalue of the Hermitian matrix $B_G(z)$ is strictly increasing, so each can cross zero at most once and the sum of root multiplicities is at most $q$.
+
+Let $z_*$ be a root and $K_*=\Ker B_G(z_*)$, $\dim K_*=m$. In the orthogonal decomposition $K_*\oplus K_*^\perp$,
+\begin{equation}
+B_G(z_*+t)=
+\begin{bmatrix}
+tJ_*+O(t^2)&tC+O(t^2)\\
+tC^{\mathsf T}+O(t^2)&B_{22}+O(t)
+\end{bmatrix},
+\end{equation}
+where $B_{22}$ is invertible and
+\begin{equation}
+J_*=\left.P_*B_G'(z_*)P_*\right|_{K_*}\succ0.
+\end{equation}
+The Schur complement on $K_*$ equals $tJ_*+O(t^2)$, and therefore
+\begin{equation}
+\det B_G(z_*+t)
+=
+\det(B_{22})\,t^m\det(J_*)+O(t^{m+1}).
+\end{equation}
+This proves \eqref{S:multiplicity}.
+
+\section{Random active size and empirical outlier counts}
+
+\begin{lemma}[Random-index transfer]
+Let $r_{d,m}\in[0,1]$ be a failure probability for a model with $m$ active columns. Suppose
+\begin{equation}
+r_{d,m_d}\to0
+\end{equation}
+for every deterministic sequence $m_d/d\to c$. If $N_d/d\to c$ in probability, then
+\begin{equation}
+\E r_{d,N_d}\to0.
+\label{S:random-index}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose $\eta_d\downarrow0$ such that
+\begin{equation}
+\Pp\{|N_d/d-c|>\eta_d\}\to0.
+\end{equation}
+If
+\begin{equation}
+\sup_{|m/d-c|\le\eta_d}r_{d,m}
+\end{equation}
+did not tend to zero, a subsequence and a choice $m_d/d\to c$ would contradict the deterministic-sequence hypothesis. Splitting the expectation on the typical and atypical events gives \eqref{S:random-index}.
+\end{proof}
+
+For each deterministic $m_d/d\to c=\phi\pi$, Proposition~\ref{S:marked-theorem} gives the exact active eigenvalue count on compact intervals separated from the active bulk. Because
+\begin{equation}
+M_d=\alpha_d\widehat M_d,\qquad
+\alpha_d=\frac{N_d}{n}\to\pi,
+\end{equation}
+one has
+\begin{equation}
+\#\{\sigma(M_d)\cap[a,b]\}
+=
+\#\!\left\{
+\sigma(\widehat M_d)\cap
+\left[\frac a{\alpha_d},\frac b{\alpha_d}\right]
+\right\}.
+\label{S:scaled-count}
+\end{equation}
+The active endpoints converge to $a/\pi$ and $b/\pi$. Uniform determinant convergence in a small endpoint neighborhood permits these converging endpoints. Equation \eqref{S:detscale} identifies the active root count with the target root count. The random-index lemma removes conditioning and proves \eqref{S:count}.
+
+\section{No spurious right outliers and existence}
+
+The operator norm is tight because
+\begin{equation}
+0\preceq M_d\preceq\frac{M}{n}A_dA_d^{\mathsf T}.
+\end{equation}
+Writing $A_d=Z_d+\mathcal M_d$, the Gaussian norm satisfies
+$\|Z_d\|/\sqrt n=O_{\Pp}(1)$, while
+\begin{equation}
+\|\mathcal M_d\|/\sqrt n\le\max_b\|\mu_b^{(d)}\|=O(1).
+\end{equation}
+Thus $\|M_d\|=O_{\Pp}(1)$.
+
+Also $F_G(z)$ remains bounded as $z\to+\infty$, while $zI_q$ diverges, so effective roots lie in a bounded interval. Fix $\epsilon>0$ and a large deterministic $K$. The right roots in $[\lambda_++\epsilon,K]$ are finite. Remove small disjoint neighborhoods of these roots. The complement is a finite union of compact root-free intervals, and the count theorem gives no empirical eigenvalues there with probability tending to one. This proves the no-spurious direction. Applying the count theorem to an isolating interval, and then to nested isolating intervals, proves existence and convergence at each effective root.
+
+\section{Simple roots and spectral projections}
+
+For the active model, the source Schur-complement proof gives, uniformly near an isolated root $x_*=z_*/\pi$,
+\begin{align}
+\|(x_dI-F_+(x_d))r_d\|&=o_{\Pp}(1),\\
+\left|r_d^{\mathsf T}[I-F_+'(x_d)]r_d-1\right|&=o_{\Pp}(1).
+\end{align}
+Multiplication by $\alpha_d$ changes eigenvalues but not eigenvectors. From \eqref{S:Fscale},
+\begin{equation}
+F_G'(z)=F_+'\!\left(\frac z\pi\right).
+\end{equation}
+Local uniformity and $\alpha_d\to\pi$ yield \eqref{S:evec1}--\eqref{S:evec2}. At a simple root, \eqref{S:multiplicity} makes the kernel one-dimensional, and \eqref{S:evec2} fixes the norm, proving \eqref{S:eveclimit}.
+
+For a repeated root, choose a positively oriented contour $\Gamma$ enclosing $z_*$ and no other effective root or bulk point. The active deterministic equivalent gives
+\begin{equation}
+\sup_{z\in\Gamma}
+\left\|
+L_d^{\mathsf T}(M_d-zI)^{-1}L_d+B_G(z)^{-1}
+\right\|
+\xrightarrow{\Pp}0.
+\label{S:resolvent}
+\end{equation}
+The full-space spectral projection is
+\begin{equation}
+\Pi_d=-\frac1{2\pi i}\oint_\Gamma(M_d-zI)^{-1}\,dz.
+\end{equation}
+Thus
+\begin{equation}
+L_d^{\mathsf T}\Pi_dL_d
+\longrightarrow
+\frac1{2\pi i}\oint_\Gamma B_G(z)^{-1}\,dz.
+\end{equation}
+The block expansion near $z_*$ gives
+\begin{equation}
+B_G(z_*+t)^{-1}
+=
+\frac1tP_*J_*^{-1}P_*+O(1).
+\end{equation}
+The residue is $P_*J_*^{-1}P_*$, proving \eqref{S:projection}. If $U_d$ is any orthonormal basis of $\Ran\Pi_d$ and $R_d=L_d^{\mathsf T}U_d$, then
+\begin{equation}
+R_dR_d^{\mathsf T}\xrightarrow{\Pp}P_*J_*^{-1}P_*.
+\end{equation}
+Only the invariant subspace is canonical; individual eigenvectors may rotate.
+
+\section{ReLU-gate corollary}
+
+\begin{corollary}
+Assume
+\begin{equation}
+h_b(g)=a_b(g)\1_{\{\ell_b(g)>0\}},
+\end{equation}
+where $\ell_b$ is a nonconstant affine functional and
+\begin{equation}
+\tau\le a_b(g)\le M
+\quad\text{on }\{\ell_b(g)>0\}.
+\end{equation}
+Then Theorem~\ref{S:main} applies.
+\end{corollary}
+
+\begin{proof}
+A nonconstant affine functional of a standard Gaussian is a nondegenerate one-dimensional Gaussian, so its positive half-space has probability strictly between zero and one. The weights belong to $\{0\}\cup[\tau,M]$ almost surely.
+\end{proof}
+
+For the pure gate $h_b(g)=\1_{\{\ell_b(g)>0\}}$,
+\begin{equation}
+M_d=\frac1n\sum_{\ell=1}^n
+\1_{\{\ell_{b_\ell}(g_\ell)>0\}}Y_\ell Y_\ell^{\mathsf T}.
+\end{equation}
+For a one-unit ReLU model
+\begin{equation}
+f_w(Y)=a\,\max(w^{\mathsf T}Y,0),
+\end{equation}
+at a fixed parameter for which no sample lies at the kink,
+\begin{equation}
+\nabla_w f_w(Y)=a\,\1_{\{w^{\mathsf T}Y>0\}}Y.
+\end{equation}
+The $w$--$w$ Jacobian-Gram or Gauss--Newton block is therefore
+\begin{equation}
+\frac{a^2}{n}\sum_{\ell=1}^n
+\1_{\{w^{\mathsf T}Y_\ell>0\}}Y_\ell Y_\ell^{\mathsf T}.
+\end{equation}
+For squared loss and fixed deterministic $w$, Gaussian data avoid the kink almost surely, the activation pattern is locally constant, and the classical Hessian block equals this matrix. This does not establish a trajectory-uniform theorem, cross-neuron blocks, or a generalized Hessian at a kink.
+
+\section{Benchmark calculations}
+
+\subsection{Independent Bernoulli thinning}
+
+If $h\sim\operatorname{Bernoulli}(\pi)$ independently of the columns, then
+\begin{equation}
+M_d=\frac{N_d}{n}
+\left(\frac1{N_d}A_+A_+^{\mathsf T}\right),
+\qquad
+\frac{N_d}{d}\to c=\phi\pi.
+\end{equation}
+The continuous bulk edges are
+\begin{equation}
+\lambda_\pm=
+\frac{(1\pm\sqrt c)^2}{\lambda\phi}
+=
+\frac{\pi}{\lambda}
+\left(1\pm\frac1{\sqrt c}\right)^2,
+\end{equation}
+and the zero mass is $(1-c)_+$. Equation \eqref{S:fixedpoint} becomes
+\begin{equation}
+zS(z)^2+
+(1+\lambda\phi z-\phi\pi)S(z)+\lambda\phi=0.
+\end{equation}
+
+\subsection{Centered pure gate}
+
+Let $Y=\lambda^{-1/2}Z$ with $Z\sim N(0,I_d)$ and
+$h=\1_{\{\langle\ell,Z\rangle>0\}}$. Conditional on $ZZ^{\mathsf T}$, the only Gaussian preimages are $Z$ and $-Z$, with equal probability, and the gate takes complementary values. Therefore
+\begin{equation}
+\Pp\{h=1\mid YY^{\mathsf T}\}=\frac12,
+\end{equation}
+so $h$ is independent of $YY^{\mathsf T}$. The model is exactly independent Bernoulli thinning with $\pi=1/2$.
+
+\subsection{Noncentered scalar gate}
+
+Let $g\sim N(0,1)$,
+\begin{equation}
+h(g)=\1_{\{a+bg>0\}},\qquad b\ne0,
+\end{equation}
+and define
+\begin{equation}
+\delta=\frac a{|b|},\quad s_b=\operatorname{sign}(b),\quad
+\pi=\Phi(\delta),\quad
+\kappa=\frac{\varphi(\delta)}{\Phi(\delta)}.
+\end{equation}
+Then
+\begin{equation}
+\E[g\mid h=1]=s_b\kappa,\qquad
+\E[g^2\mid h=1]=1-\delta\kappa.
+\end{equation}
+For $v=m+\lambda^{-1/2}g$, set
+\begin{equation}
+c=\phi\pi,\qquad
+\beta=\lambda\E[v^2\mid h=1]
+=\lambda m^2+2\sqrt\lambda\,m s_b\kappa+1-\delta\kappa.
+\end{equation}
+The scalar effective equation gives the standard spiked-covariance threshold
+\begin{equation}
+\beta>1+\frac1{\sqrt c}
+\end{equation}
+and, above threshold,
+\begin{equation}
+z_{\mathrm{out}}
+=
+\frac{\pi}{\lambda}\,
+\beta\left(1+\frac1{c(\beta-1)}\right).
+\end{equation}
+
+\subsection{Fixed-\texorpdfstring{$\epsilon$}{epsilon} comparison}
+
+For comparison only, define
+\begin{equation}
+D_\epsilon=D+\epsilon P_0,\qquad
+P_0=\diag(\1_{\{D_{\ell\ell}=0\}}).
+\end{equation}
+Then
+\begin{equation}
+M_{d,\epsilon}-M_d
+=\frac{\epsilon}{n}A_dP_0A_d^{\mathsf T}
+\end{equation}
+and
+\begin{equation}
+\|M_{d,\epsilon}-M_d\|
+\le\epsilon\frac{\|A_d\|^2}{n}
+=O_{\Pp}(\epsilon).
+\end{equation}
+This perturbation estimate does not, by itself, prove support-edge or root-multiplicity stability. The exact active reduction avoids that missing limit interchange.
+
+\section{Reproducible numerical checks}
+
+The repository contains two executable Python scripts, fixed master seed
+\texttt{20260720}, package versions, JSON output, and four plots. Representative checks are:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Diagnostic & Recorded value\\
+\midrule
+Bernoulli model rank & $254$ observed, $254$ predicted\\
+Bernoulli zero mass & $0.20625$ observed, $0.2$ limiting\\
+Bernoulli top eigenvalue & $1.1641$ observed, $1.1963$ edge\\
+Stieltjes residual & $2.39\times10^{-16}$\\
+Centered gate top eigenvalue & $1.9728$, edge $2$\\
+Noncentered predicted outlier & $4.6653$\\
+Noncentered simulations & $4.48$--$4.87$\\
+Determinant residual & $1.62\times10^{-10}$\\
+Regularization identity error & $<1.1\times10^{-17}$\\
+Two-construction operator difference & $1.93\times10^{-15}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These computations are diagnostic and do not replace the analytic proof.
+
+\section{Literature boundary and limitations}
+
+The closest earlier result located is the centered Gaussian multi-index theory of Kova\v{c}evi\'c, Yihan, and Mondelli \cite{KovacevicEtAl2025}, whose bounded preprocessing assumption allows exact zero values and which proves leading-eigenvalue and subspace-overlap limits. The present theorem addresses the noncentered Gaussian-mixture model and multiplicity-preserving counts on arbitrary compact right intervals. Recent local-law and block-Wishart developments \cite{FanEtAl2026,MontanariSaeed2026} provide broader context but do not state the same coupled finite-rank determinant theorem.
+
+The proof here requires nonnegative weights and a fixed positive gap between zero and the nonzero weights. Signed weights, positive weights accumulating at zero, growing summary dimension, and uniformity along a data-dependent training trajectory remain outside the theorem.
+
+\begin{acknowledgments}
+OpenAI GPT-5.6 Pro was used substantively for literature synthesis, proof drafting, code generation, numerical checking, and manuscript preparation under the author's direction. The numerical output was checked by deterministic assertions supplied with the repository. The author is responsible for independent verification of all mathematical claims before journal submission.
+\end{acknowledgments}
+
+\paragraph*{Data availability.}
+All source files, code, fixed seeds, outputs, and figures are intended for public release at \RepositoryURL\ under CC BY 4.0 \cite{PetkovRepository}.
+
+\bibliography{references}
+
+\end{document}

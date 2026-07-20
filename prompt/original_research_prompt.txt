@@ -1,0 +1,1658 @@
+PROMPT USED FOR
+
+“RIGHT-OUTLIER THEORY FOR SELF-COUPLED SAMPLE COVARIANCE
+MATRICES WITH ZERO DIAGONAL WEIGHTS”
+
+
+1. SOURCE AND SCOPE
+
+This task attacks a precise special case of the following genuine open
+problem listed on SolveAll:
+
+Outlier theory beyond non-degeneracy/invertibility assumptions
+(ReLU and zero diagonal entries)
+
+https://solveall.org/problem/outlier-theory-beyond-non-degeneracyinvertibility-assumptions-relu-and-zero-diag
+
+Primary source:
+
+Gérard Ben Arous, Reza Gheissari, Jiaoyang Huang, and Aukosh Jagannath,
+
+“Local geometry of high-dimensional mixture models:
+Effective spectral theory and dynamical transitions”
+
+https://arxiv.org/abs/2502.15655
+
+The source paper studies self-coupled random matrices of the form
+
+    M_d = (1/n) A D A^T,
+
+where:
+
+- A is a high-dimensional Gaussian-mixture data matrix;
+- D is diagonal;
+- each diagonal entry of D may depend on the same data column appearing
+  in A, through finitely many low-dimensional projections.
+
+The paper proves:
+
+1. a deterministic limiting bulk spectral law under boundedness and
+   low-dimensional coupling assumptions; and
+
+2. exact outlier and outlier-eigenvector equations when D is effectively
+   invertible and does not accumulate mass near zero.
+
+The paper explicitly states that ReLU-type activations are not covered
+because the ReLU derivative is zero on a set of positive probability.
+Consequently, D has exact zero entries, while the outlier proof uses D^{-1}
+at several points.
+
+This task isolates the cleanest first extension:
+
+    D is nonnegative;
+    D may have a positive-probability atom at zero;
+    every nonzero entry of D is uniformly bounded away from zero.
+
+This includes pure ReLU gates and ReLU-gated positive weights.
+
+The task does not initially require treating:
+
+- signed nonzero weights;
+- positive weights accumulating continuously at zero;
+- unbounded weights;
+- growing-dimensional summary statistics;
+- the full nonsmooth neural-network Hessian;
+- training-data dependence along an entire SGD trajectory.
+
+A complete solution to the exact theorem below counts as success.
+
+Before claiming novelty, conduct a current literature search to determine
+whether this zero-atom outlier theorem has been proved after the source paper.
+
+Search at least:
+
+- the exact SolveAll problem title;
+- papers citing arXiv:2502.15655;
+- singular diagonal weights in self-coupled sample covariance matrices;
+- random covariance matrices with Bernoulli diagonal weights;
+- outliers with an atom at zero in the variance distribution;
+- spiked covariance matrices with missing observations;
+- anisotropic local laws for singular weighted covariance matrices;
+- ReLU Hessian outlier random matrix theory;
+- gated Gaussian covariance matrices;
+- truncated Gaussian sample covariance outliers;
+- finite-rank deformations of singular sample covariance matrices;
+- pseudoinverse linearization of sample covariance matrices;
+- 2026 and later preprints.
+
+Use primary sources. Do not infer novelty merely from the absence of a
+result in one database.
+
+
+2. CURRENT TASK STATEMENT
+
+
+2.1 Fixed parameters
+
+Fix:
+
+    k,C,q in N,
+    q = C+k,
+
+    lambda > 0,
+    phi > 0,
+
+    p_1,...,p_k > 0,
+    sum_{b=1}^k p_b = 1,
+
+and a positive-semidefinite matrix
+
+    G in R^{q x q}.
+
+All of these quantities are fixed independently of d and n.
+
+The ratio n/d satisfies
+
+    n/d -> phi
+
+as
+
+    n,d -> infinity.
+
+
+2.2 Geometric realization of G
+
+For every sufficiently large d, let
+
+    B_d =
+    [x_1^{(d)},...,x_C^{(d)},
+     mu_1^{(d)},...,mu_k^{(d)}]
+    in R^{d x q}
+
+satisfy
+
+    B_d^T B_d = G.
+
+Let
+
+    L_d in R^{d x q}
+
+have orthonormal columns and satisfy
+
+    L_d^T B_d = sqrt(G),
+
+where sqrt(G) is the unique positive-semidefinite square root.
+
+If G is rank deficient, L_d may contain additional orthonormal directions
+outside the span of B_d. All statements must remain valid in that case.
+
+For hidden label b in {1,...,k}, define
+
+    m_b = L_d^T mu_b^{(d)}.
+
+Equivalently, m_b is the column of sqrt(G) corresponding to the class mean
+mu_b.
+
+
+2.3 Gaussian-mixture samples
+
+For each ell=1,...,n, independently sample:
+
+    b_ell ~ Categorical(p_1,...,p_k),
+
+    g_ell ~ N(0,I_q),
+
+    w_ell ~ N(0,I_{d-q}).
+
+All labels and Gaussian variables are mutually independent.
+
+Let L_d^perp be any orthonormal complement of L_d and define
+
+    Y_ell
+      =
+    L_d(m_{b_ell}+lambda^{-1/2}g_ell)
+      +
+    lambda^{-1/2} L_d^perp w_ell.
+
+Equivalently,
+
+    Y_ell
+      ~
+    N(mu_{b_ell}^{(d)},lambda^{-1}I_d).
+
+Let
+
+    A_d = [Y_1 ... Y_n] in R^{d x n}.
+
+
+2.4 Self-coupled zero-atom diagonal weights
+
+For each hidden class b, let
+
+    h_b : R^q -> [0,M]
+
+be a measurable function, for some fixed finite M.
+
+Define
+
+    D_ell,ell = h_{b_ell}(g_ell).
+
+Thus D is coupled to A through the same low-dimensional Gaussian vector
+g_ell that determines the projection of Y_ell into the summary-statistic
+space.
+
+Assume the following zero-gap condition.
+
+There exists a fixed tau>0 such that, almost surely,
+
+    h_b(g) belongs to {0} union [tau,M]
+
+for every b.
+
+The probability
+
+    pi_b = P(h_b(g)>0)
+
+may lie anywhere in [0,1].
+
+Define the overall active probability
+
+    pi = sum_{b=1}^k p_b pi_b.
+
+The central random matrix is
+
+    M_d = (1/n) A_d D A_d^T.
+
+It is real symmetric and positive semidefinite.
+
+
+3. EFFECTIVE BULK AND OUTLIER EQUATIONS
+
+The following definitions are adapted from Equations (1.9)–(1.13) of the
+primary source.
+
+Check every normalization and index convention against the source before
+using them in a final proof.
+
+
+3.1 Effective bulk
+
+Let g~N(0,I_q).
+
+For z in the upper half-plane, define S_G(z) as the Stieltjes-transform
+solution of
+
+                        k
+    1+z S_G(z)
+      =
+    phi sum p_b E[
+                        S_G(z) h_b(g)
+                       -------------------------------
+                       lambda phi+S_G(z)h_b(g)
+                     ].
+                       b=1
+
+Choose the unique branch satisfying the defining properties of a Stieltjes
+transform:
+
+    Im S_G(z)>0 when Im z>0,
+
+and
+
+    z S_G(z) -> -1
+
+as |z|->infinity in the upper half-plane.
+
+Let
+
+    nu_G
+
+be the corresponding probability measure.
+
+The atom h_b(g)=0 contributes zero inside the displayed fraction.
+
+The source paper’s bulk theorem is intended to imply convergence of the
+empirical spectral measure of M_d to nu_G even in the presence of the atom
+at zero. This fact must be verified from the source theorem rather than
+reproved from memory.
+
+Write
+
+    lambda_+(G) = sup supp(nu_G)
+
+for the right edge of the effective bulk.
+
+
+3.2 Effective outlier matrix
+
+For b in {1,...,k}, define
+
+    v_b(g) = lambda^{-1/2}g+m_b in R^q.
+
+For real z outside supp(nu_G), define
+
+    F_G(z)
+      =
+    lambda phi
+    sum_{b=1}^k p_b
+    E[
+        h_b(g)
+        --------------------------------
+        lambda phi+S_G(z)h_b(g)
+
+        v_b(g)v_b(g)^T
+      ].
+
+The proposed effective right outliers are the real roots
+
+    z>lambda_+(G)
+
+of
+
+    det(z I_q-F_G(z))=0.
+
+Count roots with their analytic multiplicities.
+
+Define
+
+    Z_G^+
+      =
+    {z>lambda_+(G):
+     det(z I_q-F_G(z))=0}.
+
+
+4. MAIN ZERO-ATOM OUTLIER CONJECTURE
+
+Resolve the following theorem completely.
+
+
+THEOREM TO PROVE
+
+Under the setup above, the positive-probability zero entries of D do not
+alter the effective right-outlier equations.
+
+More precisely:
+
+
+4.1 Outlier counting on compact intervals
+
+Let
+
+    I=[a,b]
+
+be a compact interval satisfying
+
+    lambda_+(G)<a<b<infinity,
+
+and suppose neither endpoint is an effective root:
+
+    det(aI_q-F_G(a)) != 0,
+    det(bI_q-F_G(b)) != 0.
+
+Then, with probability tending to one,
+
+    number of eigenvalues of M_d in I
+      =
+    number of roots of det(zI_q-F_G(z)) in I,
+
+with both sides counted with multiplicity.
+
+
+4.2 No spurious right outliers
+
+For every epsilon>0, there exists a deterministic K<infinity such that,
+with probability tending to one, every eigenvalue of M_d satisfying
+
+    eigenvalue > lambda_+(G)+epsilon
+
+lies within o(1) of an element of Z_G^+ intersected with
+[lambda_+(G)+epsilon,K].
+
+In particular, exact zero entries of D do not generate additional positive
+right outliers absent from the effective determinant equation.
+
+
+4.3 Existence of empirical outliers
+
+If z_* is an isolated effective root of multiplicity m and
+
+    z_*>lambda_+(G),
+
+then for every sufficiently small fixed delta>0, with probability tending
+to one, M_d has exactly m eigenvalues in
+
+    (z_*-delta,z_*+delta),
+
+and all those eigenvalues converge to z_*.
+
+
+4.4 Simple-root eigenvector equation
+
+Suppose z_* is a simple root.
+
+Let z_d be the corresponding empirical eigenvalue and let u_d be an
+associated unit eigenvector.
+
+Define its projection into the summary-statistic space by
+
+    r_d = L_d^T u_d in R^q.
+
+Prove that, after choosing a sign and passing to convergent subsequences
+when necessary,
+
+    (z_* I_q-F_G(z_*))r = 0,
+
+and
+
+    ||r||_2^2
+      -
+    <r,partial_z F_G(z_*)r>
+      =
+    1.
+
+Equivalently, prove the approximate finite-dimensional equations
+
+    ||(z_d I_q-F_G(z_d))r_d||_2 = o_P(1),
+
+and
+
+    |
+      ||r_d||_2^2
+      -
+      <r_d,partial_zF_G(z_d)r_d>
+      -
+      1
+    |
+      =
+    o_P(1).
+
+
+4.5 Multiple roots
+
+For a root of multiplicity greater than one, formulate and prove the
+correct spectral-projection or invariant-subspace statement.
+
+Do not state convergence of individual eigenvectors when the limiting
+eigenspace has rotational ambiguity.
+
+
+4.6 Exact kernel contribution
+
+Let
+
+    N_active
+      =
+    number of ell such that D_ell,ell>0.
+
+Prove that, almost surely for each finite d,
+
+    rank(M_d)=min(d,N_active),
+
+provided pi>0.
+
+Consequently,
+
+    dim ker(M_d)
+      =
+    d-min(d,N_active)
+
+almost surely, and
+
+    (1/d)dim ker(M_d)
+      ->
+    (1-phi pi)_+
+
+in probability, and preferably almost surely.
+
+Reconcile this exact kernel formula with the atom of nu_G at zero.
+
+The zero eigenvalues are not to be misclassified as outliers.
+
+
+5. OPTIONAL STRONGER EXTENSIONS
+
+Only pursue these after the main theorem is complete.
+
+
+5.1 All intervals away from zero
+
+Extend the outlier-count theorem to every compact interval
+
+    I subset R \ (supp(nu_G) union {0}),
+
+allowing signed nonzero weights
+
+    h_b(g) in [-M,-tau] union {0} union [tau,M].
+
+
+5.2 Converging summary statistics
+
+Allow
+
+    G_d -> G
+
+rather than requiring B_d^T B_d=G exactly.
+
+State and verify the analogue of the source paper’s Assumption 3, including
+the discontinuity introduced by hard ReLU gates.
+
+
+5.3 Nonzero weights approaching zero
+
+Replace the fixed gap condition by a quantitative small-ball condition on
+the nonzero part, while still permitting an atom at zero:
+
+    P(0<h_b(g)<epsilon)
+      <=
+    a_epsilon,
+
+where
+
+    a_epsilon -> 0.
+
+This is closer to general ReLU-gated Hessian and gradient weights.
+
+
+5.4 Training trajectories
+
+Establish a result uniform over a compact trajectory of summary statistics
+
+    G_t,
+
+so that the outlier locations can be followed along an effective SGD
+dynamics.
+
+
+6. RELU-GATE COROLLARY
+
+At minimum, derive the following explicit corollary of the main theorem.
+
+Suppose
+
+    h_b(g)
+      =
+    a_b(g) 1{ell_b(g)>0},
+
+where:
+
+- ell_b(g) is a nonconstant affine function of g;
+- a_b(g) is measurable;
+- tau <= a_b(g) <= M whenever ell_b(g)>0.
+
+Then D has a positive-probability atom at zero and satisfies the zero-gap
+condition.
+
+Prove that the complete right-outlier theorem applies.
+
+The pure ReLU gate is
+
+    h_b(g)=1{ell_b(g)>0}.
+
+Explain exactly which empirical covariance, gradient, Gauss–Newton, or
+neural-network block this represents.
+
+Do not claim a theorem for a classical ReLU Hessian unless all
+nondifferentiability and second-derivative issues have been handled
+rigorously.
+
+If a generalized Hessian is used, define it explicitly.
+
+
+7. COMPLETE SUCCESS CONDITIONS
+
+A successful resolution must include all of the following.
+
+
+7.1 Rigorous zero-atom extension
+
+Prove the outlier-counting theorem without assuming that D is invertible.
+
+The proof must identify every place in the source argument where D^{-1} is
+used and replace or bypass that use.
+
+
+7.2 Correct deterministic equations
+
+Prove that the same equations S_G and F_G remain correct when D has an
+atom at zero.
+
+If the correct equations differ, derive and prove the corrected equations.
+
+Do not assume the desired formula merely because zero terms vanish
+algebraically in the expectation.
+
+
+7.3 Multiplicity
+
+Preserve analytic and algebraic multiplicities.
+
+A theorem locating one eigenvalue near every simple numerical root does not
+establish the general result.
+
+
+7.4 No spurious eigenvalues
+
+Prove both directions:
+
+- every effective root produces empirical outliers;
+- every empirical right outlier corresponds to an effective root.
+
+
+7.5 Eigenvectors
+
+Prove the summary-space eigenvector equations or the correct
+spectral-projection analogue.
+
+An eigenvalue-only theorem is incomplete.
+
+
+7.6 Exact zero-spectrum treatment
+
+Separate:
+
+- exact finite-dimensional zero eigenvalues;
+- a limiting atom at zero;
+- small positive bulk eigenvalues;
+- positive right outliers.
+
+Do not apply an inverse to a singular matrix.
+
+
+7.7 Uniform probabilistic control
+
+Every high-probability event must be uniform over the deterministic spectral
+sets on which the proof needs uniformity.
+
+Pointwise convergence of resolvents is not enough for eigenvalue counting.
+
+
+7.8 Current literature audit
+
+Search current primary literature before claiming novelty.
+
+A result already proved after the source paper must be attributed rather
+than relabeled as new.
+
+
+8. RESULTS THAT DO NOT COUNT
+
+None of the following is a complete solution:
+
+- proving only the limiting empirical spectral distribution;
+- reproving the bulk theorem already present in the source paper;
+- treating D independent of A only;
+- treating deterministic zero locations only;
+- treating only Bernoulli thinning independent of the samples;
+- treating only q=0;
+- treating only one numerical choice of G;
+- proving only a scalar q=1 example;
+- numerical agreement between empirical eigenvalues and the determinant
+  equation;
+- replacing exact zero weights by a fixed epsilon and never taking
+  epsilon to zero;
+- taking epsilon to zero without a uniform-in-d argument;
+- an operator-norm perturbation bound without root-count stability;
+- a weak-convergence argument without control of support edges;
+- locating empirical eigenvalues without ruling out spurious ones;
+- proving only simple-root cases;
+- ignoring multiplicity;
+- assuming all roots remain a fixed distance from the bulk;
+- excluding rank-deficient G without justification;
+- using D^{-1} on the active range without controlling the inactive range;
+- using a Moore–Penrose pseudoinverse without deriving the correct Schur
+  complement;
+- assuming conditioning on D>0 preserves an ordinary Gaussian-mixture law;
+- replacing normalization by 1/N_active without tracking N_active/n;
+- claiming a zero eigenvalue is an outlier;
+- applying Davis–Kahan without an established spectral gap;
+- using weak convergence of nu_epsilon to infer Hausdorff convergence of
+  supports;
+- using a numerical root of the Stieltjes equation without identifying
+  the physical branch;
+- proving only an upper bound on the number of right outliers;
+- treating ReLU as twice continuously differentiable;
+- a reduction ending in an unproved support-stability theorem comparable
+  in difficulty to the target;
+- a theorem whose constants depend on d;
+- a literature summary without a proof.
+
+
+9. BENCHMARK-STYLE WARM-UPS
+
+Complete these before attempting the main theorem.
+
+They do not count as the final result.
+
+
+9.1 Independent Bernoulli thinning
+
+Let
+
+    h_b(g)=Bernoulli(pi)
+
+independent of g and b.
+
+Show directly that M_d is a sample covariance matrix with a random number
+of active columns.
+
+Determine:
+
+- the limiting bulk;
+- its right edge;
+- the zero eigenvalue mass;
+- the correct normalization by n rather than N_active.
+
+Use this example to validate the equation defining S_G.
+
+
+9.2 Symmetric pure gate
+
+Let k=1, mu_1=0, and
+
+    h(g)=1{g_1>0}.
+
+Prove or disprove that h(g) is independent of the rank-one outer product
+
+    Y Y^T.
+
+Give a precise conditional-symmetry argument.
+
+Determine the resulting bulk exactly.
+
+
+9.3 Noncentered one-dimensional gate
+
+Let k=1 and let the mean lie in the gated direction.
+
+Take
+
+    h(g)=1{a+bg_1>0}.
+
+Derive:
+
+- pi=P(h(g)=1);
+- the conditional first and second moments;
+- the scalar effective outlier equation;
+- the standard spiked-covariance prediction.
+
+Use this only as a consistency check.
+
+
+9.4 Fixed-epsilon regularization
+
+Define
+
+    D_epsilon
+      =
+    D+epsilon P_0,
+
+where
+
+    P_0=diag(1{D_ell,ell=0}).
+
+For every fixed epsilon>0:
+
+- verify that D_epsilon satisfies the source paper’s invertibility
+  assumption;
+- write the corresponding bulk nu_{G,epsilon};
+- write F_{G,epsilon}(z);
+- apply the source outlier theorem with every hypothesis checked.
+
+
+9.5 Exact perturbation norm
+
+Prove
+
+    M_{d,epsilon}-M_d
+      =
+    (epsilon/n) A_d P_0 A_d^T,
+
+and obtain a high-probability bound
+
+    ||M_{d,epsilon}-M_d||_op
+      <=
+    C epsilon
+
+with C independent of d for all sufficiently large d.
+
+Do not rely on a Frobenius-norm estimate that grows with dimension.
+
+
+9.6 Rank of the active matrix
+
+Prove that the active columns are in general linear position almost surely,
+despite the gating event depending on low-dimensional projections.
+
+Deduce
+
+    rank(A_d P_active)=min(d,N_active)
+
+almost surely.
+
+
+10. SEARCH ORGANIZATION
+
+Use multiagent v2 aggressively and dynamically if it is genuinely available.
+Up to 64 concurrent agents may be used.
+
+Do not claim multiagent execution if the platform does not expose it.
+If unavailable, implement genuinely independent serial research tracks.
+
+Begin with several incompatible proof families.
+
+Do not tell most early agents that epsilon-regularization is the favored
+route. Preserve independent attempts based on:
+
+- active-column conditioning;
+- pseudoinverse linearization;
+- direct resolvent analysis;
+- finite-rank deformation theory;
+- analytic perturbation;
+- free probability;
+- exact counterexamples.
+
+Maintain an explicit registry of approaches.
+
+Every entry must contain:
+
+- approach family;
+- exact proposed lemma;
+- assumptions;
+- conclusion;
+- dependence on epsilon, d, and the spectral gap;
+- why the lemma advances the theorem;
+- fastest falsification test;
+- current evidence;
+- known obstruction;
+- status:
+  active, blocked, disproved, proved, or superseded;
+- exact next proof obligation.
+
+Group approaches by mathematical mechanism rather than by superficial
+wording.
+
+A route that replaces the target by an equally strong unproved uniform
+support theorem is blocked.
+
+A route that proves convergence only after taking epsilon fixed is blocked
+until it justifies passage to epsilon=0.
+
+Keep several incompatible approaches active over multiple rounds.
+
+Require concrete:
+
+- resolvent identities;
+- determinant factorizations;
+- uniform bounds;
+- exact scalar examples;
+- counterexamples;
+- or complete lemmas.
+
+Reject statements that singular weights, support convergence, or Rouché’s
+theorem are “standard” unless the precise theorem and hypotheses are given.
+
+Use adversarial agents throughout.
+
+The root agent must repeatedly synthesize, challenge, redirect, and launch
+new rounds rather than stopping after the first failed regularization
+argument.
+
+
+11. INDEPENDENT APPROACH FAMILIES
+
+
+11.1 Epsilon-regularization
+
+Replace every zero weight by epsilon>0.
+
+Apply the existing invertible-D theorem for fixed epsilon.
+
+Prove:
+
+1. operator-norm convergence M_{d,epsilon}->M_d as epsilon->0,
+   uniformly for large d;
+
+2. convergence of S_{G,epsilon} to S_G uniformly on compact subsets of the
+   complement of supp(nu_G);
+
+3. convergence of F_{G,epsilon} to F_G;
+
+4. stability of the right bulk edge;
+
+5. stability of determinant-root multiplicities;
+
+6. transfer of empirical eigenvalue counts;
+
+7. transfer of spectral projections and eigenvector equations.
+
+The order of limits must be explicit.
+
+A valid proof may use:
+
+    choose epsilon small;
+    then choose d sufficiently large;
+    finally remove epsilon.
+
+Do not silently interchange the two limits.
+
+
+11.2 Active-column reduction
+
+Let
+
+    I_active={ell:D_ell,ell>0}.
+
+Write
+
+    M_d
+      =
+    (N_active/n)
+    [
+      (1/N_active)
+      A_active D_active A_active^T
+    ].
+
+Conditional on activity, D_active is invertible.
+
+Derive the exact conditional law of:
+
+- hidden labels;
+- low-dimensional Gaussian coordinates;
+- orthogonal Gaussian coordinates;
+- positive diagonal weights.
+
+Determine whether the source proof extends to this conditional law.
+
+Account exactly for the random factor
+
+    N_active/n -> pi.
+
+Do not claim that the active columns remain an ordinary Gaussian mixture;
+the low-dimensional coordinates are generally truncated or reweighted.
+
+
+11.3 Pseudoinverse linearization
+
+Replace the source linearization involving D^{-1} by a block decomposition
+of the sample indices into active and inactive coordinates.
+
+Derive the exact determinant identity without taking an inverse on the zero
+block.
+
+Possible tools include:
+
+- Moore–Penrose pseudoinverses;
+- generalized Schur complements;
+- restriction to ran(D);
+- orthogonal projections;
+- determinant identities on the active block.
+
+Do not insert D^\dagger into the existing formula without proving that no
+extra determinant factors or zero modes are lost.
+
+
+11.4 Direct active-block Schur complement
+
+After permuting samples, write
+
+              [D_+  0]
+    D       = [      ],
+              [ 0   0]
+
+and
+
+    A=[A_+ A_0].
+
+Then
+
+    A D A^T=A_+D_+A_+^T.
+
+Linearize only the active matrix.
+
+Track the fact that A_+ is selected using information contained in its own
+columns.
+
+Seek a conditional anisotropic local law for the orthogonal Gaussian part.
+
+
+11.5 Direct resolvent comparison
+
+Compare
+
+    R_epsilon(z)
+      =
+    (M_{d,epsilon}-zI)^{-1}
+
+and
+
+    R_0(z)
+      =
+    (M_d-zI)^{-1}
+
+using the resolvent identity.
+
+For z a fixed distance from the spectrum, prove
+
+    ||R_epsilon(z)-R_0(z)||
+      <=
+    C(z) epsilon.
+
+Lift this to the finite-dimensional projected resolvents used in the
+outlier determinant.
+
+
+11.6 Analytic determinant and Rouché theory
+
+Let
+
+    q_epsilon(z)
+      =
+    det(zI_q-F_{G,epsilon}(z)),
+
+and
+
+    q_0(z)
+      =
+    det(zI_q-F_G(z)).
+
+Prove uniform convergence on contours that stay away from the limiting bulk.
+
+Apply Rouché’s theorem or the argument principle to preserve root counts.
+
+Treat:
+
+- multiple roots;
+- roots close to one another;
+- roots approaching the bulk edge;
+- contours enclosing no support points.
+
+
+11.7 Support-edge stability
+
+Prove the required form of
+
+    lambda_+(G,epsilon)
+      ->
+    lambda_+(G,0).
+
+Possible routes:
+
+- deterministic fixed-point analysis;
+- subordination functions;
+- free multiplicative convolution;
+- finite-matrix operator-norm comparison plus known edge convergence for
+  epsilon>0;
+- variational characterization of the support edge.
+
+Weak convergence alone is insufficient.
+
+
+11.8 Free-probability formulation
+
+The limiting bulk is a multiplicative free convolution between the weight
+law and a Marchenko–Pastur law, with the correct scaling.
+
+Study continuity of this convolution when
+
+    rho_epsilon
+      ->
+    rho_0
+
+and rho_0 has an atom at zero.
+
+Determine the exact zero-atom formula and right-edge continuity.
+
+
+11.9 Finite-rank deformation viewpoint
+
+Decompose A into:
+
+- the q-dimensional summary-statistic component;
+- the independent orthogonal Gaussian component.
+
+Treat the summary component as a finite-rank deformation of a weighted
+sample covariance bulk.
+
+Adapt standard outlier theory to a singular weight distribution.
+
+Identify precisely which finite-rank deformation theorem applies and whether
+its hypotheses permit an atom at zero.
+
+
+11.10 Direct anisotropic local law
+
+Prove an anisotropic deterministic equivalent for the singular-weight
+linearization directly.
+
+Construct a stable matrix Dyson equation that does not require D^{-1}.
+
+This route may be technically stronger than necessary; mark it blocked if it
+requires reproving a full optimal local law without additional payoff.
+
+
+11.11 Spectral projection method
+
+Use contour integrals
+
+    P_d
+      =
+    -(1/(2 pi i))
+    integral_Gamma (M_d-zI)^{-1} dz
+
+to transfer outlier eigenspaces from epsilon>0 to epsilon=0.
+
+This may be preferable to individual Davis–Kahan arguments for multiple
+roots.
+
+
+11.12 Counterexample search
+
+Search for examples where the unchanged determinant equation fails.
+
+Potential failure mechanisms include:
+
+- the active fraction pi is below 1/phi;
+- the zero atom creates a new hard edge;
+- an effective root converges to zero;
+- conditioning on activity alters a low-rank term omitted from F_G;
+- regularized roots fail to converge;
+- multiple components of the bulk merge as epsilon->0;
+- a positive eigenvalue generated by the active/inactive boundary is not
+  represented by F_G.
+
+Any apparent counterexample must be verified at increasing d and, where
+possible, converted into an exact asymptotic calculation.
+
+
+12. DETAILED REGULARIZATION PROGRAM TO TEST
+
+The following is a candidate proof route, not an established proof.
+
+
+12.1 Regularized matrices
+
+For epsilon>0 define
+
+    D_epsilon
+      =
+    D+epsilon P_0,
+
+and
+
+    M_{d,epsilon}
+      =
+    (1/n) A D_epsilon A^T.
+
+
+12.2 Apply the known theorem
+
+For each fixed epsilon, verify the source assumptions and obtain:
+
+- bulk nu_{G,epsilon};
+- right edge lambda_+(G,epsilon);
+- effective matrix F_{G,epsilon};
+- exact outlier counting away from the bulk;
+- eigenvector equations.
+
+
+12.3 Matrix perturbation
+
+Establish a high-probability event on which
+
+    sup_{0<epsilon<=epsilon_0}
+    ||M_{d,epsilon}-M_d||
+      <=
+    C epsilon.
+
+The constant C must not depend on d.
+
+
+12.4 Deterministic convergence
+
+Prove, on every compact set K separated from supp(nu_G),
+
+    sup_{z in K}
+    |S_{G,epsilon}(z)-S_G(z)|
+      ->
+    0,
+
+and
+
+    sup_{z in K}
+    ||F_{G,epsilon}(z)-F_G(z)||
+      ->
+    0.
+
+
+12.5 Root stability
+
+For a contour Gamma that encloses a chosen collection of effective roots
+but no part of supp(nu_G), prove that for sufficiently small epsilon,
+
+    q_epsilon
+
+and
+
+    q_0
+
+have the same number of zeros inside Gamma.
+
+
+12.6 Empirical transfer
+
+Use the known epsilon theorem and Weyl or spectral-projection perturbation
+to transfer the eigenvalue count from M_{d,epsilon} to M_d.
+
+The proof must quantify the gap between:
+
+- Gamma or I;
+- the bulk;
+- neighboring roots;
+- and zero.
+
+
+12.7 Remove epsilon
+
+Complete a correct quantifier argument of the form:
+
+For every desired error probability eta and every fixed admissible interval
+I:
+
+1. choose epsilon sufficiently small using deterministic stability;
+2. choose d sufficiently large using the fixed-epsilon theorem;
+3. transfer the result to epsilon=0;
+4. conclude the desired probability tends to one.
+
+Do not choose epsilon=epsilon_d unless all theorems used are uniform along
+that sequence.
+
+
+13. COMPUTATIONAL PROGRAM
+
+Computation is for falsification and proof design, not proof.
+
+
+13.1 Scalar models
+
+Study q=1 examples with:
+
+    h(g)=1{g>t},
+
+    h(g)=c 1{g>t},
+
+and
+
+    h(g)=a(g)1{g>t}.
+
+Numerically solve the physical branch of the Stieltjes equation.
+
+Locate:
+
+- the right bulk edge;
+- effective determinant roots;
+- root multiplicities;
+- zero mass.
+
+
+13.2 Two-dimensional summary spaces
+
+Use q=2 with:
+
+- two Gaussian mixture components;
+- one or two gating hyperplanes;
+- nonorthogonal means;
+- rank-deficient and full-rank G.
+
+Search for multiple effective roots and root collisions.
+
+
+13.3 Regularization experiment
+
+For decreasing epsilon, compare:
+
+- nu_{G,epsilon};
+- lambda_+(G,epsilon);
+- roots of q_epsilon;
+- eigenvalues of M_{d,epsilon};
+- eigenvalues of M_d.
+
+Test whether convergence is linear, Hölder, or nonuniform near critical
+points.
+
+
+13.4 Independent implementations
+
+Maintain at least two independent implementations:
+
+A. direct simulation of the Gaussian-mixture columns and gates;
+
+B. simulation using the low-dimensional/orthogonal decomposition.
+
+Their empirical spectra and projected eigenvectors must agree.
+
+
+13.5 Stieltjes solver validation
+
+The numerical solver must:
+
+- enforce the correct upper-half-plane branch;
+- check the fixed-point residual;
+- compare continuation from large imaginary z;
+- detect branch switching;
+- verify normalization zS(z)->-1;
+- use higher precision near support edges.
+
+
+13.6 Exact active-rank verification
+
+For every simulation record:
+
+- N_active;
+- rank(M_d);
+- zero eigenvalue multiplicity;
+- minimum positive eigenvalue;
+- empirical active fraction.
+
+Check the exact finite-d rank formula.
+
+
+13.7 Reproducibility
+
+Return:
+
+- source code;
+- package versions;
+- random seeds;
+- parameter files;
+- numerical tolerances;
+- solver diagnostics;
+- plots;
+- and an independent verification script.
+
+
+14. ADVERSARIAL AUDIT
+
+Every candidate proof must be checked independently.
+
+Locate the first unsupported inference rather than initially attempting to
+repair it.
+
+Audit specifically for the following errors.
+
+
+14.1 Invalid inverse
+
+Any occurrence of D^{-1} when D has zero entries is invalid.
+
+Check whether the proof actually means:
+
+- restriction to ran(D);
+- inversion of D_+;
+- or a Moore–Penrose pseudoinverse.
+
+
+14.2 Incorrect conditioning
+
+Conditioning on D_ell,ell>0 changes the distribution of the low-dimensional
+Gaussian vector g_ell.
+
+Do not replace active samples by the original Gaussian mixture.
+
+
+14.3 Lost normalization
+
+The matrix is normalized by n, not by N_active.
+
+The factor N_active/n must be retained.
+
+
+14.4 Zero atom versus zero eigenvalues
+
+Distinguish:
+
+- P(D=0);
+- the limiting zero mass of nu_G;
+- exact finite-dimensional nullity;
+- a possible hard edge at zero.
+
+
+14.5 Weak support reasoning
+
+Weak convergence of probability measures does not imply convergence of
+support edges.
+
+An explicit support-stability argument is required.
+
+
+14.6 Nonuniform regularization
+
+A theorem valid for each fixed epsilon does not automatically hold for a
+sequence epsilon_d->0.
+
+
+14.7 Incorrect Weyl transfer
+
+Weyl’s inequality controls ordered eigenvalue displacement.
+
+It does not by itself prove analytic multiplicity, eigenvector convergence,
+or root-count equality when gaps vanish.
+
+
+14.8 Bulk-edge roots
+
+A root located exactly at lambda_+(G) is not a separated outlier.
+
+Do not claim an outlier theorem at a BBP transition without a separate
+critical analysis.
+
+
+14.9 Multiple roots
+
+Davis–Kahan for an individual eigenvector is inappropriate when the
+limiting eigenvalue has multiplicity greater than one.
+
+
+14.10 Rank-deficient G
+
+Do not assume G is invertible unless explicitly stated.
+
+The summary-statistic subspace may have dimension smaller than q.
+
+
+14.11 Stieltjes branch
+
+Algebraic fixed-point equations may have multiple solutions.
+
+Only the physical Stieltjes branch defines nu_G.
+
+
+14.12 Hidden poles
+
+Before using analytic determinant arguments, verify that
+
+    lambda phi+S_G(z)h_b(g)
+
+does not vanish on the contour with positive probability.
+
+
+14.13 ReLU differentiability
+
+ReLU is not C^2.
+
+Do not import a smooth-Hessian theorem without defining the object under
+study and proving that the relevant derivatives exist almost surely.
+
+
+14.14 False independence
+
+D_ell,ell and Y_ellY_ell^T are generally dependent.
+
+Symmetry may produce independence in special centered examples only.
+
+
+14.15 Root convergence without compactness
+
+Uniform convergence on compact sets does not control roots escaping to
+infinity.
+
+Supply an operator-norm or determinant bound establishing a finite search
+region.
+
+
+14.16 Literature mismatch
+
+A theorem for:
+
+- independent diagonal weights;
+- deterministic population covariance;
+- ordinary missing-at-random data;
+- or separable covariance matrices
+
+does not automatically solve the self-coupled problem.
+
+
+15. PROOF DEPENDENCY GRAPH
+
+Before producing polished exposition, construct a dependency graph such as:
+
+    Zero-atom right-outlier theorem
+    |
+    +-- Exact source theorem reconstruction
+    |
+    +-- Bulk law with atom at zero
+    |
+    +-- Active-rank and kernel theorem
+    |
+    +-- Uniform norm bound for zero-column perturbation
+    |
+    +-- Deterministic epsilon->0 stability
+    |    |
+    |    +-- Stieltjes-transform stability
+    |    +-- right-edge stability
+    |    +-- effective-matrix stability
+    |    +-- derivative stability
+    |
+    +-- Analytic root-count stability
+    |
+    +-- Empirical eigenvalue-count transfer
+    |
+    +-- No-spurious-outlier theorem
+    |
+    +-- Simple-root eigenvectors
+    |
+    +-- Multiple-root spectral projections
+    |
+    +-- ReLU-gate corollary
+    |
+    +-- Current literature audit
+    |
+    +-- Independent adversarial audit
+
+Mark every node as:
+
+- KNOWN:
+  verified from a primary source;
+
+- PROVED:
+  supplied with a complete self-contained proof;
+
+- COMPUTATIONAL:
+  supported only by finite experiments;
+
+- CONJECTURED;
+
+- BLOCKED;
+
+- FALSE.
+
+Do not mark the root theorem proved while any necessary node remains
+computational, conjectured, or blocked.
+
+
+16. INDEPENDENT FINAL AUDIT
+
+Once a candidate proof exists, give a fresh auditor only:
+
+- the exact theorem statement;
+- all definitions;
+- the source theorem being extended;
+- the candidate proof;
+- and any external lemmas explicitly invoked.
+
+Do not provide the exploratory discussion or the authors’ confidence.
+
+Instruct the auditor to:
+
+1. identify the first invalid or unsupported step;
+
+2. check every quantifier involving epsilon, d, and probability;
+
+3. check every use of D^{-1};
+
+4. verify the active-column conditional law;
+
+5. verify the right-edge stability argument;
+
+6. verify analytic root multiplicities;
+
+7. verify the no-spurious-outlier direction;
+
+8. inspect rank-deficient G;
+
+9. inspect zero-eigenvalue handling;
+
+10. inspect repeated roots and eigenspace claims;
+
+11. verify that every cited theorem permits coupled diagonal weights;
+
+12. search for a concrete counterexample to each questionable intermediate
+    lemma.
+
+Classify every gap as:
+
+- fatal;
+- repairable through a precisely stated lemma;
+- or expository only.
+
+Do not repair gaps silently.
+
+
+17. FINAL OUTPUT REQUIREMENTS
+
+Return a complete result only after the proof survives independent audit.
+
+The final output must contain, in this order:
+
+1. Exact theorem statement.
+
+2. Complete model and notation.
+
+3. Current literature and novelty audit.
+
+4. Reconstruction of the existing invertible-D theorem.
+
+5. Proof of the bulk law with the zero atom, or an exact citation showing
+   that it is already covered.
+
+6. Exact kernel and active-rank theorem.
+
+7. Deterministic zero-atom effective equations.
+
+8. Right-edge and support-stability theorem.
+
+9. Analytic effective-root stability theorem.
+
+10. Universal empirical outlier-count proof.
+
+11. No-spurious-right-outlier proof.
+
+12. Simple-root eigenvector proof.
+
+13. Multiple-root spectral-projection theorem.
+
+14. ReLU-gate corollary.
+
+15. Reproducible computational checks.
+
+16. Independent adversarial audit report.
+
+Do not return merely because the first regularization route fails.
+
+Do not return:
+
+- only a bulk theorem;
+- only a numerical experiment;
+- only the independent-gating case;
+- only a q=1 calculation;
+- only a fixed-epsilon theorem;
+- only a proposed pseudoinverse;
+- only a reduction with a theorem-strength missing lemma;
+- or an explanation that singular covariance matrices are difficult.
+
+Continue launching new rounds and redirecting blocked approaches while the
+execution environment permits.
+
+If a persistent research environment is genuinely available, devote at
+least eight hours of active literature search, proof development,
+computation, synthesis, and adversarial audit before considering
+termination.
+
+Do not claim elapsed time, agents, searches, computations, or audits that
+did not actually occur.
+
+If the environment forcibly terminates before a complete proof is obtained,
+do not fabricate a resolution.
+
+Return only rigorously verified material and label it prominently:
+
+    INCOMPLETE — NOT A RESOLUTION OF THE ZERO-ATOM OUTLIER PROBLEM.
+
+In that forced-termination case, include:
+
+- the full approach registry;
+- every proved lemma;
+- every exact computational result;
+- every disproved approach;
+- the proof dependency graph;
+- the strongest rigorously established theorem;
+- and the first genuinely unresolved node.
