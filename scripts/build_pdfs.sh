@@ -13,20 +13,22 @@ else
   exit 1
 fi
 
-compile_one() {
-  local stem="$1"
-  (
-    cd "$PAPER"
-    pdflatex -interaction=nonstopmode -halt-on-error "$stem.tex"
-    "$BIBTEX" "$stem"
-    pdflatex -interaction=nonstopmode -halt-on-error "$stem.tex"
-    pdflatex -interaction=nonstopmode -halt-on-error "$stem.tex"
-  )
-}
+(
+  cd "$PAPER"
+  pdflatex -interaction=nonstopmode -halt-on-error main.tex
+  "$BIBTEX" main
+  pdflatex -interaction=nonstopmode -halt-on-error main.tex
+  pdflatex -interaction=nonstopmode -halt-on-error main.tex
+)
 
-compile_one main
-compile_one supplement
+test -s "$PAPER/main.pdf"
+if grep -Eq 'LaTeX Warning: (There were undefined references|Citation .* undefined|Reference .* undefined)' "$PAPER/main.log"; then
+  echo "The manuscript contains unresolved citations or references." >&2
+  exit 1
+fi
+if grep -q 'Overfull \\hbox' "$PAPER/main.log"; then
+  echo "The manuscript contains an overfull box." >&2
+  exit 1
+fi
 
-echo "Built:"
-echo "  $PAPER/main.pdf"
-echo "  $PAPER/supplement.pdf"
+echo "Built and checked $PAPER/main.pdf"
