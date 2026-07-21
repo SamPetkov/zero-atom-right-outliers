@@ -6,6 +6,25 @@
 **Version:** 0.4.1  
 **Status:** self-contained research manuscript/preprint; not peer reviewed
 
+## SolveAll problem
+
+This project was developed as a proposed resolution of the nonnegative zero-gap special case of the SolveAll problem:
+
+> [**Outlier theory beyond non-degeneracy/invertibility assumptions (ReLU and zero diagonal entries)**](https://www.solveall.org/problem/outlier-theory-beyond-non-degeneracyinvertibility-assumptions-relu-and-zero-diag)
+
+The manuscript treats nonnegative weights satisfying
+
+\[
+h_b(g)\in\{0\}\cup[\tau,M].
+\]
+
+It does not claim the optional signed-weight, continuously vanishing positive-weight, growing-summary-dimension, or trajectory-uniform extensions on the problem page. A repository preprint is not an accepted SolveAll solution or peer-reviewed validation unless SolveAll and an external review record say so explicitly.
+
+## Other SolveAll-related projects
+
+- [**One-factor FDR–FNR frontier**](https://github.com/SamPetkov/one-factor-fdr-fnr) — a special-case result related to [Optimal FDR-FNR tradeoff beyond independent two-group mixtures](https://www.solveall.org/problem/optimal-fdr-fnr-tradeoff-beyond-independent-two-group-mixtures). It treats one homogeneous rank-one Gaussian family, not the full broad dependent-model problem.
+- [**Exact planar finite-dataset constant $F(2,3)$**](https://github.com/SamPetkov/f23-planar-data-selection) — related to [COLT 2025 data selection for regression tasks](https://www.solveall.org/problem/colt-2025-data-selection-for-regression-tasks). The repository proves a deterministic repeatable-selection mean-estimation result and explicitly does not claim the different stochastic pool-selection problem currently displayed by SolveAll.
+
 This repository contains one canonical submission:
 
 - `paper/main.tex` — root TeX file;
