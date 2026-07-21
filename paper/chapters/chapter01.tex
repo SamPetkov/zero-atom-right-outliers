@@ -1,0 +1,404 @@
+\section{Introduction}
+
+Random covariance spectra typically consist of a macroscopic bulk and finitely many signal-bearing outliers. Classical spiked models identify these outliers through deterministic transforms of the bulk law and exhibit the Baik--Ben Arous--P\'ech\'e transition \cite{MarchenkoPastur1967,BBP2005,BenaychGeorgesNadakuditi2011}. In a self-coupled covariance matrix, however, the diagonal weight of a sample depends on the same low-dimensional coordinates that enter the sample itself. Such matrices occur in spectral estimators, information matrices, and blocks of neural-network curvature \cite{BenArousEtAl2025,KovacevicEtAl2025}.
+
+Ben Arous, Gheissari, Huang, and Jagannath developed an effective bulk and outlier theory for Gaussian-mixture self-coupling \cite{BenArousEtAl2025}. Their bulk theorem permits zero weights, but their outlier proof uses $D^{-1}$ after a linearization and assumes that the diagonal law does not accumulate at zero. The paper explicitly notes that ReLU is excluded because its derivative vanishes on a half-line and says that zero entries must be handled separately before the full-rank argument is applied. The question is therefore not whether the zero modes exist--they do--but whether deleting them changes the positive outlier equation.
+
+This manuscript proves that it does not under the zero-gap condition needed by the active-block argument:
+\begin{equation}
+ h_b(g)\in\{0\}\cup[\tau,M]\quad\text{almost surely},
+\end{equation}
+with fixed $0<\tau\le M<\infty$. The decisive identity is exact at finite dimension:
+\begin{equation}
+ M_d=\frac{N_{\rm active}}{n}
+ \left(\frac1{N_{\rm active}}A_+D_+A_+^{\mathsf T}\right).
+\end{equation}
+The active low-dimensional coordinate is generally truncated or reweighted, so it cannot be replaced by an ordinary Gaussian-mixture sample. Instead, the pair consisting of the positive weight and the active summary coordinate is retained as a joint fixed-dimensional mark. Only the orthogonal Gaussian block is passed to the existing anisotropic local law.
+
+The proof has five parts. First, we derive the exact conditional active law and the exact Schur complement, compressed resolvent, and eigenvector normalization. Second, we verify the source weighted-Wishart hypotheses for arbitrary fixed-dimensional active marks, carefully tracking the distinct ratios $N_{\rm active}/n$, $N_{\rm active}/d$, and $N_{\rm active}/(d-q)$. Third, exact dilation identifies the bulk support, the zero atom, and the unchanged finite-dimensional determinant. Fourth, monotonicity of the effective matrix proves root isolation and multiplicity, after which the argument principle gives universal eigenvalue counts and excludes spurious right outliers. Fifth, contour integration gives the invariant-subspace limit at repeated roots.
+
+The closest result found in the literature is the centered Gaussian multi-index theory of Kova\v{c}evi\'c, Zhang, and Mondelli \cite{KovacevicEtAl2025}, whose preprocessing assumption already permits exact zero values and which describes leading eigenvalues and subspace overlaps in that related model. Accordingly, no broad claim that zero-weight self-coupled theory is new is made. The theorem below concerns the noncentered Gaussian-mixture model and the complete compact-interval right-outlier count, including multiplicity and projected eigenspaces. Recent non-separable local-law and block-Wishart work provides additional context \cite{FanEtAl2026,MontanariSaeed2026}.
+
+\section{Model and complete theorem}
+
+Fix $k,C,q\in\mathbb{N}$ with $q=C+k$, $\lambda>0$, $\phi>0$, probabilities $p_b>0$ summing to one, and a positive-semidefinite matrix $G\in\R^{q\times q}$. For each large $d$, let
+\begin{equation}
+B_d=[x_1^{(d)},\ldots,x_C^{(d)},\mu_1^{(d)},\ldots,\mu_k^{(d)}]
+\end{equation}
+satisfy $B_d^{\mathsf T}B_d=G$. Choose $L_d\in\R^{d\times q}$ with orthonormal columns and
+\begin{equation}
+L_d^{\mathsf T}B_d=\sqrt G.
+\end{equation}
+No inverse of $G$ or $\sqrt G$ is used. In fact,
+\begin{equation}
+\|B_d-L_d\sqrt G\|_{\mathrm F}^2
+=\operatorname{Tr}G-2\operatorname{Tr}G+\operatorname{Tr}G=0,
+\label{S:polar-identity}
+\end{equation}
+so $B_d=L_d\sqrt G$ and the construction below has exactly the prescribed
+class means. If $G$ is rank deficient, unused columns of $L_d$ may be chosen
+arbitrarily outside $\operatorname{span}B_d$ without changing $B_d$.
+
+For class $b$, let $m_b=L_d^{\mathsf T}\mu_b^{(d)}$; by
+\eqref{S:polar-identity}, it is the fixed column of $\sqrt G$ corresponding
+to $\mu_b$. Independently over $\ell$ sample
+\begin{equation}
+b_\ell\sim\operatorname{Cat}(p_1,\ldots,p_k),\quad
+g_\ell\sim N(0,I_q),\quad
+w_\ell\sim N(0,I_{d-q}),
+\end{equation}
+and define
+\begin{equation}
+Y_\ell
+=L_d\!\left(m_{b_\ell}+\lambda^{-1/2}g_\ell\right)
++\lambda^{-1/2}L_d^\perp w_\ell.
+\label{S:Y}
+\end{equation}
+Let $A_d=[Y_1\cdots Y_n]$, with $n/d\to\phi$, and let
+\begin{equation}
+D_{\ell\ell}=h_{b_\ell}(g_\ell),\qquad
+M_d=\frac1nA_dDA_d^{\mathsf T},
+\label{S:M}
+\end{equation}
+where $h_b:\R^q\to[0,M]$ is measurable and
+\begin{equation}
+h_b(g)\in\{0\}\cup[\tau,M]\quad\text{a.s.}
+\label{S:gap}
+\end{equation}
+for some $\tau>0$. Put
+\begin{equation}
+\pi_b=\Pp\{h_b(g)>0\},\qquad
+\pi=\sum_{b=1}^kp_b\pi_b.
+\label{S:pi}
+\end{equation}
+When $\pi>0$, write $\Pp_+$ for the active mark law
+\begin{equation}
+\Pp_+(b,dg)
+=
+\frac{p_b\1_{\{h_b(g)>0\}}\gamma_q(dg)}{\pi},
+\label{S:active-law}
+\end{equation}
+where $\gamma_q$ denotes standard Gaussian measure on $\R^q$.
+
+Let $S_G$ be the physical Stieltjes branch
+\begin{equation}
+1+zS_G(z)=
+\phi\sum_{b=1}^kp_b
+\E\!\left[
+\frac{S_G(z)h_b(g)}
+{\lambda\phi+S_G(z)h_b(g)}
+\right],
+\label{S:fixedpoint}
+\end{equation}
+with $\operatorname{Im}S_G(z)>0$ for $\operatorname{Im}z>0$ and
+$zS_G(z)\to-1$. Let $\nu_G$ be its probability measure and
+\begin{equation}
+\lambda_+(G)=\sup\supp\nu_G.
+\end{equation}
+For
+\begin{equation}
+v_b(g)=m_b+\lambda^{-1/2}g,
+\end{equation}
+define, outside the support,
+\begin{equation}
+F_G(z)=
+\lambda\phi\sum_{b=1}^kp_b
+\E\!\left[
+\frac{h_b(g)}
+{\lambda\phi+S_G(z)h_b(g)}
+v_b(g)v_b(g)^{\mathsf T}
+\right],
+\label{S:F}
+\end{equation}
+and $B_G(z)=zI_q-F_G(z)$.
+
+\begin{theorem}[Complete zero-atom theorem]
+\label{S:main}
+If $\pi=0$, then $M_d=0$ almost surely and all assertions reduce to
+$\nu_G=\delta_0$, $S_G(z)=-1/z$, and $F_G=0$. Assume $\pi>0$.
+\begin{enumerate}
+\item The empirical spectral distribution of $M_d$ converges weakly in probability to $\nu_G$, and
+\begin{equation}
+\nu_G(\{0\})=(1-\phi\pi)_+.
+\label{S:zeroatom}
+\end{equation}
+
+\item For every compact $K\subset(\lambda_+(G),\infty)$,
+\begin{equation}
+\inf_{z\in K}\;
+\essinf_{(b,g)\sim\Pp_+}
+\left|\lambda\phi+S_G(z)h_b(g)\right|>0.
+\label{S:denominator}
+\end{equation}
+Moreover, $S_G$, $F_G$, and $B_G$ extend holomorphically to a complex
+neighborhood of $K$.
+
+\item Let $I=[a,b]\subset(\lambda_+(G),\infty)$ and assume
+$\det B_G(a)\det B_G(b)\ne0$. Then, with probability tending to one,
+\begin{equation}
+\#\{\sigma(M_d)\cap I\}
+=
+\#\{z\in I:\det B_G(z)=0\},
+\label{S:count}
+\end{equation}
+with algebraic and analytic multiplicity.
+
+\item For each root $z_*>\lambda_+(G)$,
+\begin{equation}
+\operatorname{ord}_{z_*}\det B_G(z)=\dim\Ker B_G(z_*).
+\label{S:multiplicity}
+\end{equation}
+The sum of right-root multiplicities is at most $q$.
+
+\item Every isolated root of multiplicity $m$ attracts exactly $m$ empirical eigenvalues. Conversely, for every $\epsilon>0$ there is a deterministic $K<\infty$ such that, with
+\begin{equation}
+\mathcal Z_{\epsilon,K}
+=
+\{z\in[\lambda_+(G)+\epsilon,K]:\det B_G(z)=0\},
+\end{equation}
+the following alternative holds. If $\mathcal Z_{\epsilon,K}\ne\varnothing$, then
+\begin{equation}
+\sup_{\substack{x\in\sigma(M_d)\\x>\lambda_+(G)+\epsilon}}
+\dist(x,\mathcal Z_{\epsilon,K})
+\xrightarrow{\Pp}0,
+\label{S:no-spurious}
+\end{equation}
+where the supremum over an empty empirical set is zero. If
+$\mathcal Z_{\epsilon,K}=\varnothing$, then
+\begin{equation}
+\Pp\{\sigma(M_d)\cap(\lambda_+(G)+\epsilon,\infty)=\varnothing\}
+\longrightarrow1.
+\label{S:no-spurious-empty}
+\end{equation}
+
+\item If $z_*$ is simple, $z_d\to z_*$ is its empirical eigenvalue, $u_d$ is a unit eigenvector, and $r_d=L_d^{\mathsf T}u_d$, then
+\begin{align}
+\|B_G(z_d)r_d\|&=o_{\Pp}(1),\label{S:evec1}\\
+\left|r_d^{\mathsf T}B_G'(z_d)r_d-1\right|&=o_{\Pp}(1),
+\label{S:evec2}
+\end{align}
+or equivalently,
+\begin{equation}
+\left|\|r_d\|^2-
+\langle r_d,F_G'(z_d)r_d\rangle-1\right|=o_{\Pp}(1).
+\label{S:evec2-equivalent}
+\end{equation}
+If $e_*$ is a unit vector spanning $\Ker B_G(z_*)$, then after sign choice,
+\begin{equation}
+r_d\xrightarrow{\Pp}
+\frac{e_*}{\sqrt{e_*^{\mathsf T}B_G'(z_*)e_*}}.
+\label{S:eveclimit}
+\end{equation}
+
+\item If $z_*$ has multiplicity $m>1$, choose $\delta>0$ so that
+$[z_*-\delta,z_*+\delta]$ is disjoint from the bulk and contains no other
+effective root, and let
+\begin{equation}
+\Pi_d=\1_{(z_*-\delta,z_*+\delta)}(M_d)
+\end{equation}
+be the corresponding empirical spectral projection. Let
+\begin{equation}
+K_*=\Ker B_G(z_*),\quad P_*=\operatorname{Proj}_{K_*},\quad
+J_*=\left.P_*B_G'(z_*)P_*\right|_{K_*}.
+\end{equation}
+Then $J_*\succ0$, $\rank\Pi_d=m$ with probability tending to one, and
+\begin{equation}
+L_d^{\mathsf T}\Pi_dL_d
+\xrightarrow{\Pp}P_*J_*^{-1}P_*.
+\label{S:projection}
+\end{equation}
+
+\item For every finite $d$, almost surely,
+\begin{equation}
+\rank M_d=\min(d,N_{\mathrm{active}}),\qquad
+N_{\mathrm{active}}=\sum_{\ell=1}^n\1_{\{D_{\ell\ell}>0\}}.
+\label{S:rank}
+\end{equation}
+Consequently,
+\begin{equation}
+\frac1d\dim\Ker M_d\longrightarrow(1-\phi\pi)_+
+\quad\text{almost surely}.
+\label{S:nullity}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+
+\section{Proof architecture and exact active-column reduction}
+\label{S:active-section}
+
+The proof has three logically separate layers. First, zero columns are deleted by an exact
+finite-dimensional identity. Second, the source local law is applied only to the resulting
+invertible weighted-Wishart block, while the conditional low-dimensional variables are retained
+as arbitrary fixed-dimensional marks. Third, the two random ratios
+\begin{equation}
+\alpha_d=\frac{N_d}{n},
+\qquad
+c_d=\frac{N_d}{d}
+\label{S:two-ratios}
+\end{equation}
+are kept explicit until the final deterministic scaling step. This separation prevents both an
+invalid inverse and a lost normalization.
+
+Define
+\begin{equation}
+T_\ell=h_{b_\ell}(g_\ell),\qquad
+I_\ell=\1_{\{T_\ell>0\}},\qquad
+N_d=\sum_{\ell=1}^n I_\ell.
+\end{equation}
+After a column permutation,
+\begin{equation}
+A_d=[A_{+,d}\ A_{0,d}],\qquad
+D=\begin{bmatrix}D_{+,d}&0\\0&0\end{bmatrix},
+\end{equation}
+where $D_{+,d}$ is $N_d\times N_d$ and
+\begin{equation}
+\tau I\preceq D_{+,d}\preceq MI.
+\end{equation}
+On the event $N_d\ge1$, identically for every realization,
+\begin{equation}
+M_d
+=\frac1nA_{+,d}D_{+,d}A_{+,d}^{\mathsf T}
+=\alpha_d\widehat M_d,
+\qquad
+\widehat M_d=
+\frac1{N_d}A_{+,d}D_{+,d}A_{+,d}^{\mathsf T}.
+\label{S:activeidentity}
+\end{equation}
+If $N_d=0$, then $M_d=0$ and $\widehat M_d$ is not needed. Since $\pi>0$,
+$\Pp\{N_d=0\}=(1-\pi)^n\to0$, and under the product coupling this event
+occurs only finitely often almost surely. The inactive columns disappear
+before any determinant identity, Schur complement, or resolvent is introduced.
+
+\begin{lemma}[Exact conditional active law]
+\label{S:active-law-lemma}
+With $\Pp_+$ defined by \eqref{S:active-law}, for every deterministic
+index set $J\subset[n]$, conditional on
+$\{I_\ell=1:\ell\in J\}$ and $\{I_\ell=0:\ell\notin J\}$, the triples
+$(b_\ell,g_\ell,w_\ell)_{\ell\in J}$ are independent, their $(b,g)$
+coordinates have law \eqref{S:active-law}, and their $w$ coordinates remain independent
+$N(0,I_{d-q})$ variables. Conditional only on $N_d=m$, the ordered active triples, listed
+by increasing sample index, are $m$ independent draws from this same law.
+\end{lemma}
+
+\begin{proof}
+For one sample the activity event is measurable with respect to $(b,g)$ and independent of $w$.
+Thus
+\begin{equation}
+\Pp\{b=b_0,g\in dg,w\in dw\mid I=1\}
+=
+\frac{p_{b_0}\1_{\{h_{b_0}(g)>0\}}\gamma_q(dg)}{\pi}
+\gamma_{d-q}(dw).
+\end{equation}
+Because the conditioning event for a fixed $J$ is a product of coordinatewise events, independence
+across indices is preserved. Given $N_d=m$, summing over the $\binom nm$ possible active sets
+changes only the uniformly distributed positions of the successes; every ordered active list has
+the product law $\Pp_+^{\otimes m}\otimes\gamma_{d-q}^{\otimes m}$.
+\end{proof}
+
+The active $g$ is generally truncated or reweighted and is not replaced by an unconditioned
+Gaussian vector. Since it is absolutely continuous with respect to Gaussian measure, the active
+mark
+\begin{equation}
+T=h_b(g),\qquad V=m_b+\lambda^{-1/2}g
+\label{S:active-mark}
+\end{equation}
+satisfies $T\in[\tau,M]$ and $\E_+\|V\|^r<\infty$ for every finite $r$.
+Moreover, the $I_\ell$ are i.i.d. Bernoulli variables of mean $\pi$, so Hoeffding's inequality and
+Borel--Cantelli give
+\begin{equation}
+\alpha_d=\frac{N_d}{n}\longrightarrow\pi,\qquad
+c_d=\frac{N_d}{d}\longrightarrow c:=\phi\pi
+\quad\text{almost surely}.
+\label{S:active-ratios}
+\end{equation}
+
+
+\section{Exact finite-dimensional Schur identities}
+
+Before invoking any asymptotic result, we record the exact algebra used for
+eigenvalue counts, eigenvectors, and spectral projections. This also fixes all
+sign and derivative conventions.
+
+Let $m\ge1$, write $V=[V_1\ \cdots\ V_m]\in\R^{q\times m}$ and
+$W=[W_1\ \cdots\ W_m]\in\R^{(d-q)\times m}$, and let
+$D=\diag(T_1,\ldots,T_m)$. In the orthogonal basis $[L\ L^\perp]$, the matrix
+\begin{equation}
+\widehat M=\frac1m\sum_{i=1}^m T_iY_iY_i^{\mathsf T}
+\end{equation}
+is unitarily equivalent to
+\begin{equation}
+\begin{bmatrix}
+A_m&B_m\\
+B_m^{\mathsf T}&C_m
+\end{bmatrix},
+\qquad
+\begin{aligned}
+A_m&=\frac1mVDV^{\mathsf T},\\
+B_m&=\frac1{\sqrt{\lambda}\,m}VDW^{\mathsf T},\\
+C_m&=\frac1{\lambda m}WDW^{\mathsf T}.
+\end{aligned}
+\label{S:block-matrix}
+\end{equation}
+For $z\notin\sigma(C_m)$, define the $q\times q$ Schur matrix
+\begin{equation}
+Q_m(z)
+=
+zI_q-A_m+B_m(C_m-zI)^{-1}B_m^{\mathsf T}.
+\label{S:exact-Q}
+\end{equation}
+
+\begin{lemma}[Exact determinant, resolvent, and eigenvector identities]
+\label{S:exact-schur-lemma}
+For every $z\notin\sigma(C_m)$,
+\begin{equation}
+\det(\widehat M-zI_d)
+=
+(-1)^q\det(C_m-zI_{d-q})\det Q_m(z).
+\label{S:exact-det}
+\end{equation}
+If additionally $\det Q_m(z)\ne0$, then
+\begin{equation}
+L^{\mathsf T}(\widehat M-zI_d)^{-1}L=-Q_m(z)^{-1}.
+\label{S:exact-compressed-resolvent}
+\end{equation}
+If $z\notin\sigma(C_m)$ is an eigenvalue of $\widehat M$ and
+$u=Lr+L^\perp s$ is a corresponding unit eigenvector, then
+\begin{align}
+Q_m(z)r&=0,\label{S:exact-evec-Q}\\
+s&=-(C_m-zI)^{-1}B_m^{\mathsf T}r,\label{S:exact-evec-s}\\
+r^{\mathsf T}Q_m'(z)r&=1,\label{S:exact-evec-norm}
+\end{align}
+where
+\begin{equation}
+Q_m'(z)=I_q+B_m(C_m-zI)^{-2}B_m^{\mathsf T}\succ0.
+\label{S:exact-Q-prime}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The Schur complement of $C_m-zI$ in $\widehat M-zI$ is
+\begin{equation}
+A_m-zI_q-B_m(C_m-zI)^{-1}B_m^{\mathsf T}=-Q_m(z).
+\end{equation}
+The determinant and top-left inverse-block formulas give
+\eqref{S:exact-det} and \eqref{S:exact-compressed-resolvent}. The lower block
+of $(\widehat M-zI)u=0$ gives \eqref{S:exact-evec-s}; substituting it into the
+upper block gives \eqref{S:exact-evec-Q}. Finally,
+\begin{equation}
+1=\|r\|^2+\|s\|^2
+=
+r^{\mathsf T}
+\left[I_q+B_m(C_m-zI)^{-2}B_m^{\mathsf T}\right]r.
+\end{equation}
+Differentiating \eqref{S:exact-Q} gives the bracketed matrix, proving
+\eqref{S:exact-evec-norm}--\eqref{S:exact-Q-prime}.
+\end{proof}
+
+Thus the asymptotic proof needs two assembled outputs: exclusion of spectrum
+from the orthogonal weighted-Wishart block $C_m$ on the chosen right region,
+and locally uniform convergence of $Q_m$ and $Q_m'$ to their deterministic
+limits.  The four source results listed below are used only to establish these
+two outputs.  Every eigenvector and projection statement then follows from the
+exact identities above.
+
