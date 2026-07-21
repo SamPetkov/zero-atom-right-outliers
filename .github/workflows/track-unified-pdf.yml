@@ -1,0 +1,43 @@
+name: Track unified manuscript PDF
+
+on:
+  push:
+    branches:
+      - agent/unified-proof-v0.4
+
+permissions:
+  contents: write
+
+jobs:
+  track-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Compile unified manuscript
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: manuscript.tex
+          working_directory: paper
+          work_in_root_file_dir: true
+          texlive_version: 2026
+          os: debian
+      - name: Commit PDF and refresh checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            git ls-files | grep -v '^SHA256SUMS-v0.4.0$' | grep -v '^.github/workflows/track-unified-pdf.yml$'
+            echo paper/manuscript.pdf
+          } | sort -u | while IFS= read -r file; do
+            sha256sum "$file"
+          done > SHA256SUMS-v0.4.0
+
+          rm -f .github/workflows/track-unified-pdf.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f paper/manuscript.pdf SHA256SUMS-v0.4.0
+          git add -u .github/workflows/track-unified-pdf.yml
+          git commit -m "Build unified manuscript PDF"
+          git push origin HEAD
