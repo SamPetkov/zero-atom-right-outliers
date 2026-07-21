@@ -1,0 +1,49 @@
+\documentclass[
+  aps,
+  prl,
+  reprint,
+  onecolumn,
+  superscriptaddress,
+  longbibliography,
+  nofootinbib
+]{revtex4-2}
+
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\input{macros}
+\hypersetup{
+  pdftitle={Right Outliers of Self-Coupled Sample Covariance Matrices with Exact Zero Weights},
+  pdfauthor={Samuil Petkov},
+  pdfsubject={A single self-contained APS REVTeX manuscript with the complete zero-atom outlier proof},
+  pdfkeywords={random matrix theory, sample covariance, spectral outliers, ReLU, singular diagonal weights}
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+
+\begin{document}
+
+\title{Right Outliers of Self-Coupled Sample Covariance Matrices with Exact Zero Weights}
+
+\author{Samuil Petkov}
+\email{samuil.petkov@ens.psl.eu}
+\affiliation{\'Ecole normale sup\'erieure -- PSL, 45 rue d'Ulm, 75005 Paris, France}
+
+\date{20 July 2026}
+
+\begin{abstract}
+Self-coupled sample covariance matrices arise when each sample is weighted by a function of the same fixed-dimensional coordinates that carry its signal. Existing effective outlier theory for Gaussian-mixture models assumes an invertible diagonal weight matrix and therefore excludes hard gates such as the derivative of a rectified linear unit. We prove the nonnegative zero-gap extension: when every weight is either zero or belongs to a fixed interval $[\tau,M]$, exact zeros create the atom $(1-\phi\pi)_+$ at the spectral origin but do not change the positive right-outlier determinant. The proof removes inactive columns before linearization, retains both random active-sample ratios, and applies the source anisotropic weighted-Wishart estimate only to the independent orthogonal Gaussian block, with the exact truncated active variables treated as arbitrary fixed-dimensional marks. We establish multiplicity-preserving eigenvalue counts, absence of spurious right outliers, simple-root eigenvector normalization, repeated-root spectral-projection convergence, and the exact finite-dimensional kernel. The pure half-space gate gives a rigorous ReLU Gauss--Newton block at a fixed non-kink parameter.
+\end{abstract}
+
+\maketitle
+
