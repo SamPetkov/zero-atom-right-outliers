@@ -1,0 +1,119 @@
+\section{Marked extension of the invertible-weight proof}
+
+The source proof \cite{BenArousEtAl2025} separates a fixed-dimensional row
+mark from an independent high-dimensional Gaussian block. Conditioning on
+activity changes only the joint law of the fixed-dimensional mark $(T,V)$.
+We import four precise inputs from the source after this separation:
+Proposition~2.7 for the weighted-Wishart bulk, Proposition~2.8 for absence
+of weighted-Wishart outliers, Theorem~2.12 for the anisotropic deterministic
+equivalent, and Lemma~2.13 for locally uniform transform convergence.
+Theorem~2.12 explicitly allows random test vectors independent of the
+Gaussian block. The source bulk theorem needs no inverse, whereas its
+outlier theorem assumes nondegeneracy near zero; its ReLU discussion
+identifies the uses of $D^{-1}$ as the obstruction.
+
+The next proposition is therefore not a black-box application of the source
+outlier theorem to a conditionally Gaussian mixture--the active sample is not
+such a mixture. It is a reconstruction of the source argument from those
+weighted-Wishart inputs, with every remaining step written for the exact joint
+mark law.
+
+\begin{proposition}[Scaled weighted-Wishart input from the source]
+\label{S:source-input}
+Let $p,m\to\infty$ with
+\begin{equation}
+\beta_d:=\frac mp\longrightarrow\beta\in(0,\infty).
+\end{equation}
+Let $X\in\R^{p\times m}$ have independent $N(0,1)$ entries, let
+$D=\diag(T_1,\ldots,T_m)$ be independent of $X$, and assume that the
+entries of $D$ are independent.  Suppose that, eventually,
+$T_i\in[\tau_0,M_0]$ and that the empirical law
+\begin{equation}
+\widehat\rho_d=\frac1m\sum_{i=1}^m\delta_{T_i}
+\end{equation}
+and its support converge almost surely to a compact probability law
+$\rho\subset[\tau_0,M_0]$, weakly and in Hausdorff distance, respectively.
+Put
+\begin{equation}
+\overline X=\frac{X}{\sqrt p},
+\qquad
+C_d=\overline X D\overline X^{\mathsf T},
+\end{equation}
+and let $\widetilde s_d$ be the physical solution of
+\begin{equation}
+\frac1{\widetilde s_d(z)}
+=-z+\beta_d\int
+\frac{t}{1+\widetilde s_d(z)t}\,\widehat\rho_d(dt).
+\label{S:source-input-fixed}
+\end{equation}
+Let $\widetilde\nu$ be the limiting measure obtained by replacing
+$(\widehat\rho_d,\beta_d)$ with $(\rho,\beta)$.
+
+The row-normalized forms of Propositions~2.7--2.8,
+Theorem~2.12, and Lemma~2.13 of Ref.~\cite{BenArousEtAl2025} imply the
+following.
+\begin{enumerate}
+\item The empirical spectral distribution of $C_d$ converges weakly almost
+surely to $\widetilde\nu$.
+\item If $J\Subset\R\setminus\supp\widetilde\nu$ is bounded, then
+\begin{equation}
+\sigma(C_d)\cap J=\varnothing
+\end{equation}
+eventually almost surely.
+\item For $z\notin\sigma(C_d)$, define the exact lower Schur block
+\begin{equation}
+\mathcal K_d(z)
+:=D-D\overline X^{\mathsf T}(C_d-zI)^{-1}\overline X D.
+\label{S:source-exact-K}
+\end{equation}
+On every compact $K\Subset\C\setminus\supp\widetilde\nu$ with positive
+distance from the support,
+\begin{equation}
+\mathcal K_d(z)
+\ \sim_{\mathrm{aniso}}\
+D\bigl(I+\widetilde s_d(z)D\bigr)^{-1}
+\label{S:source-lower-block}
+\end{equation}
+locally uniformly: for any random unit vectors $u_d,v_d\in\R^m$ that may
+depend on $D$ but are independent of $X$,
+\begin{equation}
+\sup_{z\in K}
+\left|
+ u_d^{\mathsf T}
+ \left[\mathcal K_d(z)-D(I+\widetilde s_d(z)D)^{-1}\right]
+ v_d
+\right|\longrightarrow0
+\end{equation}
+in probability, and in the source coupling eventually almost surely.
+The source writes the corresponding lower inverse block with the opposite
+sign; the definition \eqref{S:source-exact-K} absorbs that sign, so the
+positive matrix on the right of \eqref{S:source-lower-block} is the object
+that enters the Schur matrix \eqref{S:source-Q} below.
+\item The functions $\widetilde s_d$ converge locally uniformly off the
+limiting support to the physical transform $\widetilde s$ of
+$\widetilde\nu$.
+\end{enumerate}
+\end{proposition}
+
+For clarity about normalization, Proposition~\ref{S:source-input} is the
+row-normalized form of the cited source results.  The source isolates an
+orthogonal Gaussian block of row dimension $d-q$, writes its deterministic
+self-consistent equation with aspect ratio $n/(d-q)$ in equation (2.11), and
+approximates the lower linearization block by
+$-D(I+\widetilde S^{(d)}D)^{-1}$ in equation (2.19).  Replacing
+$(d-q,n)$ by $(p,m)$ and writing the normalized Gaussian matrix as
+$\overline X=X/\sqrt p$ gives \eqref{S:source-input-fixed} and
+\eqref{S:source-lower-block}.  Equivalently, one may start from the
+sample-normalized matrix $m^{-1}XDX^{\mathsf T}$ and use the exact identity
+\begin{equation}
+ \frac1pXDX^{\mathsf T}
+ =\beta_d\left(\frac1mXDX^{\mathsf T}\right),
+ \qquad \beta_d=\frac mp,
+\end{equation}
+together with the dilation formula
+$S_{a\mu}(z)=a^{-1}S_\mu(z/a)$ and the corresponding block-resolvent
+rescaling.  Both routes give the displayed equation and the same Schur block;
+no finite-dimensional identification of $p$ with another dimension is made.
+These are the only local-law, transform-convergence, bulk, and no-outlier
+inputs used below.
+

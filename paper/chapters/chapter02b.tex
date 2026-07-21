@@ -1,0 +1,462 @@
+\begin{proposition}[Invertible covariance with fixed-dimensional marks]
+\label{S:marked-theorem}
+Let $m_d/d\to c\in(0,\infty)$. Let $(T_i,V_i)_{i\le m_d}$ be i.i.d. with
+\begin{equation}
+T_i\in[\tau,M]\quad\text{a.s.},\qquad
+V_i\in\R^q,\qquad
+\E\|V_i\|^r<\infty\quad(r<\infty).
+\label{S:marked-assumptions}
+\end{equation}
+Let $W_i\sim N(0,I_{d-q})$ be i.i.d.\ and independent of the marks, and define
+\begin{equation}
+Y_i=LV_i+\lambda^{-1/2}L^\perp W_i,\qquad
+\widehat M_d=\frac1{m_d}\sum_{i=1}^{m_d}T_iY_iY_i^{\mathsf T}.
+\end{equation}
+Let $s_c$ be the physical solution of
+\begin{equation}
+1+zs_c(z)
+=
+c\,\E\!\left[
+\frac{s_c(z)T}{\lambda c+s_c(z)T}
+\right],
+\label{S:marked-fixed}
+\end{equation}
+let $\nu_c$ be its measure, and set
+\begin{equation}
+F_c(z)
+=
+\lambda c\,\E\!\left[
+\frac{T}{\lambda c+s_c(z)T}VV^{\mathsf T}
+\right],
+\qquad
+B_c(z)=zI_q-F_c(z).
+\label{S:marked-F}
+\end{equation}
+Then the empirical spectral distribution of $\widehat M_d$ converges to
+$\nu_c$. More precisely, if $K$ is a compact subset of
+$(\sup\supp\nu_c,\infty)$, there is a complex neighborhood $U$ of $K$ such
+that, with probability tending to one, the orthogonal block $C_{m_d}$ from
+\eqref{S:block-matrix} has no spectrum in $U$, $Q_{m_d}$ is holomorphic on
+$U$, and on every compact $U'\Subset U$,
+\begin{equation}
+\sup_{z\in U'}
+\left(
+\|Q_{m_d}(z)-B_c(z)\|
++
+\|Q_{m_d}'(z)-B_c'(z)\|
+\right)
+\xrightarrow{\Pp}0.
+\label{S:Q-convergence}
+\end{equation}
+Consequently:
+\begin{enumerate}
+\item eigenvalues of $\widehat M_d$ in compact right intervals are counted by
+zeros of $\det B_c$, with multiplicity;
+\item root-free compact right intervals contain no eigenvalues with
+probability tending to one;
+\item on every contour $\Gamma\Subset U$ avoiding the zeros of $\det B_c$,
+\begin{equation}
+\sup_{z\in\Gamma}
+\left\|
+L^{\mathsf T}(\widehat M_d-zI)^{-1}L+B_c(z)^{-1}
+\right\|
+\xrightarrow{\Pp}0;
+\label{S:marked-resolvent}
+\end{equation}
+\item for every eigenpair $(z_d,u_d)$ in such a right region, with
+$r_d=L^{\mathsf T}u_d$,
+\begin{equation}
+\|B_c(z_d)r_d\|=o_{\Pp}(1),
+\qquad
+\left|r_d^{\mathsf T}B_c'(z_d)r_d-1\right|=o_{\Pp}(1).
+\label{S:marked-evec}
+\end{equation}
+\end{enumerate}
+All assertions hold along every deterministic sequence $m_d/d\to c$.
+\end{proposition}
+
+\begin{proof}
+\emph{Step 1: exact source scaling and independence.}
+Let
+\begin{equation}
+p_d=d-q,
+\qquad
+\gamma_d=\frac{p_d}{d},
+\qquad
+c_d=\frac{m_d}{d},
+\qquad
+\beta_d=\frac{m_d}{p_d}.
+\label{S:three-ratios}
+\end{equation}
+Because $q$ is fixed, $\gamma_d\to1$ and both $c_d$ and $\beta_d$
+converge to $c$.  Define
+\begin{equation}
+\widetilde H_d
+=
+\frac{\lambda}{d}\sum_{i=1}^{m_d}T_iY_iY_i^{\mathsf T}
+=
+\lambda c_d\widehat M_d.
+\label{S:source-scaling}
+\end{equation}
+Let $\overline W_d=W/\sqrt{p_d}$ and
+$\widetilde W_d=W/\sqrt d=\sqrt{\gamma_d}\,\overline W_d$.  Let
+$R_d\in\R^{m_d\times q}$ have $i$th row
+$\sqrt{\lambda/d}\,V_i^{\mathsf T}$.  In the basis $[L\ L^\perp]$,
+\begin{equation}
+\sqrt{\frac{\lambda}{d}}[Y_1\cdots Y_{m_d}]
+=
+\begin{bmatrix}R_d^{\mathsf T}\\ \widetilde W_d\end{bmatrix}.
+\label{S:mark-decomposition}
+\end{equation}
+Thus $(R_d,D)$ is independent of the Gaussian block
+$\overline W_d$.  The rows of $R_d$ may be correlated with $D$ because
+both are functions of the joint mark $(T,V)$; this causes no problem because
+the source anisotropic theorem permits random test vectors independent of
+the Gaussian block.  Gaussianity of $V$ is never used.
+
+The distinction between $d$ and $p_d=d-q$ is kept exact.  Put
+\begin{equation}
+D_d^\circ=\gamma_dD.
+\label{S:rescaled-D}
+\end{equation}
+Then the orthogonal block of $\widetilde H_d$ is exactly
+\begin{equation}
+\widetilde C_d
+=
+\widetilde W_dD\widetilde W_d^{\mathsf T}
+=
+\overline W_dD_d^\circ\overline W_d^{\mathsf T}.
+\label{S:orthogonal-exact-scaling}
+\end{equation}
+Accordingly, the source local law is applied with row dimension $p_d$,
+aspect ratio $\beta_d=m_d/p_d$, and diagonal weights $D_d^\circ$.
+No finite-dimensional identification of $d$ with $d-q$ is made.
+
+\emph{Step 2: verify the imported weighted-Wishart hypotheses.}
+Let $\rho$ be the law of $T$.  The empirical law
+$\widehat\rho_d=m_d^{-1}\sum_i\delta_{T_i}$ converges weakly to $\rho$
+almost surely.  Its support converges to $\supp\rho$ in Hausdorff distance:
+for every $\eta>0$, cover the compact support by finitely many open
+$(\eta/2)$-balls centered in the support.  Each ball has positive $\rho$-mass,
+so the probability that it is missed is exponentially small in $m_d$; a
+union bound and Borel--Cantelli apply.  The reverse inclusion is automatic
+because $T_i\in\supp\rho$ almost surely.
+
+The empirical law of $D_d^\circ$ is the dilation of
+$\widehat\rho_d$ by $\gamma_d$. If one insists on the source paper's
+literal low-dimensional representation of a diagonal entry, any law on
+$[\tau,M]$ can be realized as
+$T=F_T^{-1}(\Phi(\xi))$ for a standard Gaussian $\xi$ and a generalized
+quantile $F_T^{-1}$. Thus the formal coupling assumption for the independent
+weighted-Wishart input entails no additional restriction here. Since
+$\gamma_d\to1$, the empirical law converges weakly
+to $\rho$, and its support converges to $\supp\rho$ in Hausdorff distance.
+For all sufficiently large $d$ its entries belong to
+$[\tau/2,2M]$.  These are the strong empirical convergence and regularity
+hypotheses used in Proposition~2.8 and Theorem~2.12 of
+Ref.~\cite{BenArousEtAl2025}.  For a prescribed bounded spectral compact, choose the source regularity
+parameter smaller than
+\begin{equation}
+\min\{\tau/2,(2M)^{-1},(1+\sup|z|)^{-1},1\}.
+\end{equation}
+The weight law is then regular with this parameter, and the compact lies
+inside the spectral domain of the source estimate.
+The source no-outlier theorem therefore applies to \eqref{S:orthogonal-exact-scaling}.
+
+The source anisotropic estimate also applies to the finitely many columns
+of $R_d$.  They are independent of $\overline W_d$, may be correlated with
+$D$, and for every fixed $j\le q$,
+\begin{equation}
+\|R_d e_j\|^2
+=
+\frac{\lambda}{d}\sum_{i=1}^{m_d}V_{ij}^2
+=O(1)
+\label{S:R-column-bound}
+\end{equation}
+almost surely on the natural coupling, by the strong law and
+$m_d/d\to c$.  The random-vector clause in
+Proposition~\ref{S:source-input} is used directly: each nonzero vector
+$R_d e_j$ is normalized and embedded in the lower block of the source
+linearization.  To recover every matrix entry, apply the same estimate to
+the finite collection $R_d e_i$, $R_d e_j$, and
+$R_d(e_i\pm e_j)$ and use polarization; zero vectors contribute
+identically zero.  Because $q$ is fixed, a finite union of the corresponding
+high-probability events still has probability tending to one.  Restoring
+the $O(1)$ column norms in \eqref{S:R-column-bound} preserves convergence.
+Thus no quenched assertion beyond the source theorem is being used, and no
+Gaussianity assumption on the joint mark $(T,V)$ is introduced.
+
+\emph{Step 3: the exact Schur matrix and the local law.}
+For $z\notin\sigma(\widetilde C_d)$, the source-scaled Schur matrix is
+\begin{equation}
+\widetilde Q_d(z)
+=
+zI_q-R_d^{\mathsf T}DR_d
++
+R_d^{\mathsf T}D\widetilde W_d^{\mathsf T}
+(\widetilde C_d-zI)^{-1}
+\widetilde W_dDR_d.
+\label{S:source-Q}
+\end{equation}
+Equivalently,
+\begin{equation}
+\widetilde Q_d(z)=zI_q-R_d^{\mathsf T}\mathcal K_d(z)R_d,
+\quad
+\mathcal K_d(z)
+=
+D-D\widetilde W_d^{\mathsf T}
+(\widetilde C_d-zI)^{-1}\widetilde W_dD.
+\label{S:K-block}
+\end{equation}
+Let
+\begin{equation}
+\mathcal K_d^\circ(z)
+=
+D_d^\circ-D_d^\circ\overline W_d^{\mathsf T}
+(\widetilde C_d-zI)^{-1}\overline W_dD_d^\circ.
+\end{equation}
+Using $D_d^\circ=\gamma_dD$ and
+$\widetilde W_d=\sqrt{\gamma_d}\,\overline W_d$ gives the exact identity
+\begin{equation}
+\mathcal K_d^\circ(z)=\gamma_d\mathcal K_d(z).
+\label{S:K-gamma-identity}
+\end{equation}
+
+Let $\overline s_d$ be the source deterministic transform associated with
+the empirical law of $D_d^\circ$ and aspect ratio $\beta_d$.  The
+lower-right block of the source anisotropic local law gives, locally
+uniformly on every compact set separated from the limiting support,
+\begin{equation}
+\mathcal K_d^\circ(z)
+\ \sim_{\rm aniso}\
+D_d^\circ(I+\overline s_d(z)D_d^\circ)^{-1}.
+\end{equation}
+Set
+\begin{equation}
+a_d(z)=\gamma_d\overline s_d(z).
+\label{S:a-d-definition}
+\end{equation}
+After division by $\gamma_d$ in \eqref{S:K-gamma-identity},
+\begin{equation}
+\mathcal K_d(z)
+\ \sim_{\rm aniso}\
+D(I+a_d(z)D)^{-1}.
+\label{S:K-local-law}
+\end{equation}
+The finite-dimensional deterministic equation is worth recording.  Since
+$D_d^\circ=\gamma_dD$, equation
+\eqref{S:source-input-fixed} for $\overline s_d$ becomes, after multiplying
+by $\gamma_d^{-1}$,
+\begin{equation}
+\frac1{a_d(z)}
+=-\frac{z}{\gamma_d}
++\beta_d\frac1{m_d}\sum_{i=1}^{m_d}
+\frac{T_i}{1+a_d(z)T_i}.
+\label{S:a-d-finite-equation}
+\end{equation}
+The empirical laws of $D_d^\circ$ converge strongly to $\rho$,
+$\gamma_d\to1$, and $\beta_d\to c$.  Lemma~2.13 of the source, or directly
+the stability of \eqref{S:a-d-finite-equation} on compact sets separated
+from the limiting support, therefore gives
+\begin{equation}
+a_d\longrightarrow\widetilde s
+\label{S:a-d-limit}
+\end{equation}
+locally uniformly, where $\widetilde s$ is the physical solution in
+\eqref{S:source-fixed} below.
+
+Applying \eqref{S:K-local-law} to the normalized columns of $R_d$, using
+\eqref{S:R-column-bound}, and polarizing the resulting quadratic-form
+estimates yields
+\begin{equation}
+\widetilde Q_d(z)
+=
+zI_q-R_d^{\mathsf T}D(I+a_d(z)D)^{-1}R_d+o_{\Pp}(1)
+\label{S:Q-local-law}
+\end{equation}
+locally uniformly.  This is the precise point at which the source local law
+is used.
+
+\emph{Step 4: denominator separation and the marked law of large numbers.}
+The limiting transform in the source scaling solves
+\begin{equation}
+1+z\widetilde s(z)
+=
+c\,\E\!\left[
+\frac{\widetilde s(z)T}{1+\widetilde s(z)T}
+\right].
+\label{S:source-fixed}
+\end{equation}
+Let $M_\rho=\sup\supp\rho$.  On the real component to the right of the
+limiting support, the Silverstein--Choi support parametrization
+\cite{SilversteinChoi1995}, also used in the proof of Proposition~2.8 of
+Ref.~\cite{BenArousEtAl2025}, states that
+\begin{equation}
+y(z):=-\frac1{\widetilde s(z)}>M_\rho,
+\qquad
+z=y+c\,y\int\frac{t}{y-t}\,\rho(dt).
+\label{S:support-map}
+\end{equation}
+Consequently, for $t\in\supp\rho$,
+\begin{equation}
+1+\widetilde s(z)t=1-\frac{t}{y(z)}>0.
+\end{equation}
+If $K$ is a compact right set, continuity of $y$ and compactness give a
+number $\delta_K>0$ such that
+\begin{equation}
+\inf_{\substack{z\in K\\t\in\supp\rho}}
+|1+\widetilde s(z)t|\ge\delta_K.
+\label{S:marked-denominator}
+\end{equation}
+Holomorphy and uniform continuity preserve half this bound on a sufficiently
+thin complex neighborhood $U$ of $K$.  Strong support convergence and
+\eqref{S:a-d-limit} then give, with probability tending to one,
+\begin{equation}
+\inf_{\substack{z\in U'\\1\le i\le m_d}}
+|1+a_d(z)T_i|\ge\delta_K/4
+\label{S:finite-denominator}
+\end{equation}
+for every compact $U'\Subset U$ and all sufficiently large $d$.
+
+The reduced matrix in \eqref{S:Q-local-law} is
+\begin{equation}
+\widetilde F_d(z)
+=
+R_d^{\mathsf T}D(I+a_d(z)D)^{-1}R_d
+=
+\frac{\lambda}{d}\sum_{i=1}^{m_d}
+\frac{T_iV_iV_i^{\mathsf T}}{1+a_d(z)T_i}.
+\label{S:empirical-F}
+\end{equation}
+Insert the deterministic transform $\widetilde s$ to separate the three
+sources of error:
+\begin{align}
+\widetilde F_d(z)
+-\lambda c\,\E\!\left[
+\frac{T}{1+\widetilde s(z)T}VV^{\mathsf T}
+\right]
+={}&\frac{\lambda}{d}\sum_{i=1}^{m_d}T_iV_iV_i^{\mathsf T}
+\left[
+\frac1{1+a_d(z)T_i}
+-\frac1{1+\widetilde s(z)T_i}
+\right]\notag\\
+&+\lambda c_d\left\{
+\frac1{m_d}\sum_{i=1}^{m_d}
+\frac{T_iV_iV_i^{\mathsf T}}{1+\widetilde s(z)T_i}
+-\E\!\left[
+\frac{T}{1+\widetilde s(z)T}VV^{\mathsf T}
+\right]
+\right\}\notag\\
+&+\lambda(c_d-c)\,
+\E\!\left[
+\frac{T}{1+\widetilde s(z)T}VV^{\mathsf T}
+\right].
+\label{S:marked-LLN-decomposition}
+\end{align}
+The first term is uniformly $o(1)$ on $U'$ by
+\eqref{S:a-d-limit}, \eqref{S:finite-denominator}, and
+$m_d^{-1}\sum_i\|V_i\|^2=O(1)$ almost surely.  For the second term, every
+matrix entry has an integrable envelope $C(1+\|V\|^2)$.  A strong law on a
+finite net in $U'$, followed by the derivative bound implied by
+\eqref{S:marked-denominator}, gives a uniform strong law.  The final term
+vanishes because $c_d\to c$.  Therefore
+\begin{equation}
+\sup_{z\in U'}
+\left\|
+\widetilde F_d(z)
+-
+\lambda c\,\E\!\left[
+\frac{T}{1+\widetilde s(z)T}VV^{\mathsf T}
+\right]
+\right\|
+\longrightarrow0
+\quad\text{almost surely}.
+\label{S:uniform-mark-LLN}
+\end{equation}
+Combining \eqref{S:Q-local-law} and \eqref{S:uniform-mark-LLN} gives locally
+uniform convergence of $\widetilde Q_d$ to
+\begin{equation}
+\widetilde B(z)
+=
+zI_q-
+\lambda c\,\E\!\left[
+\frac{T}{1+\widetilde s(z)T}VV^{\mathsf T}
+\right].
+\label{S:B-tilde}
+\end{equation}
+All functions are holomorphic on the same neighborhood.  Cauchy's formula
+therefore gives locally uniform convergence of their first derivatives as
+well.
+
+\emph{Step 5: return to the $1/m_d$ normalization.}
+The limiting deterministic rescaling is
+\begin{equation}
+\widetilde s(\lambda cx)=\frac1{\lambda c}s_c(x),
+\qquad
+\widetilde B(\lambda cx)=\lambda c\,B_c(x).
+\label{S:marked-rescaling}
+\end{equation}
+At finite dimension, the exact identity
+$\widetilde H_d=\lambda c_d\widehat M_d$ and the block definitions give
+\begin{equation}
+\widetilde Q_d(\lambda c_dx)=\lambda c_d\,Q_{m_d}(x).
+\label{S:finite-Q-scaling}
+\end{equation}
+This is the only finite-dimensional scaling used. The source transform
+contains the separate ratio $\beta_d=m_d/(d-q)$, and
+$\beta_d-c_d\to0$ because $q$ is fixed. Since both ratios converge to $c$,
+the locally uniform convergence just proved implies
+\eqref{S:Q-convergence}.
+
+Finally, $\widetilde H_d$ differs from
+$\diag(0_q,\widetilde C_d)$ by rank at most $2q$, so their empirical
+spectral measures, normalized by $d$, have the same limit.  The difference
+between normalization by $d$ and by $p_d=d-q$ is $o(1)$.  Since
+$\widetilde H_d=\lambda c_d\widehat M_d$ and $c_d\to c$, deterministic
+dilation of that limiting measure gives the measure $\nu_c$ whose transform
+satisfies \eqref{S:marked-fixed}.  This proves the bulk claim in the original
+$1/m_d$ normalization.
+
+We now justify the zero count without hiding any complex roots.  For
+$z\in\C_+$, the physical transform satisfies
+$\operatorname{Im}\widetilde s(z)>0$, and for every $T>0$,
+\begin{equation}
+\operatorname{Im}\frac{T}{1+\widetilde s(z)T}
+=
+-\frac{T^2\operatorname{Im}\widetilde s(z)}
+{|1+\widetilde s(z)T|^2}<0.
+\end{equation}
+Hence $\operatorname{Im}\widetilde B(z)\succeq
+(\operatorname{Im}z)I_q\succ0$.  By conjugation the analogous statement
+holds in $\C_-$, so every zero of $\det\widetilde B$ off the limiting bulk
+is real.  The same conclusion holds for $B_c$ by
+\eqref{S:marked-rescaling}.
+
+Let $[a,b]$ be a compact right interval whose endpoints are not limiting
+roots.  Choose a thin rectangle $\mathcal R$ with vertical sides through
+$a$ and $b$, contained in the common holomorphy domain.  Its horizontal
+sides contain no zero by the preceding imaginary-part argument, and its
+vertical sides contain no zero after the height is chosen sufficiently
+small.  Therefore
+\begin{equation}
+\inf_{z\in\partial\mathcal R}|\det B_c(z)|>0.
+\end{equation}
+Uniform convergence in \eqref{S:Q-convergence} implies uniform convergence
+of the determinants on $\partial\mathcal R$; Rouch\'e's theorem, equivalently
+the argument principle, gives the same number of zeros inside
+$\mathcal R$, counted analytically.  The source no-outlier theorem gives no
+orthogonal-block eigenvalue in $[a,b]$ with probability tending to one.
+Since the spectrum of $C_{m_d}$ is real, its determinant has no zero inside
+$\mathcal R$.  The exact factorization \eqref{S:exact-det} then identifies
+the zeros of $\det Q_{m_d}$ inside $\mathcal R$ with the eigenvalues of the
+real symmetric full matrix in $[a,b]$, counted algebraically.  This proves
+the count and root-free assertions, including multiplicity.
+
+On a contour avoiding limiting roots, uniform convergence of $Q_{m_d}$ and
+the matrix inverse identity \eqref{S:exact-compressed-resolvent} give
+\eqref{S:marked-resolvent}.  Finally,
+\eqref{S:exact-evec-Q} and \eqref{S:exact-evec-norm}, together with uniform
+convergence of $Q_{m_d}$ and $Q_{m_d}'$, give
+\eqref{S:marked-evec}.  This proves every assertion of the proposition.
+\end{proof}
+

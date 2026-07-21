@@ -1,8 +1,8 @@
-name: Reproducibility Checks
+name: Reproducibility checks
 
 on:
-  push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,16 +14,17 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: '3.13'
           cache: pip
-      - name: Install dependencies
+      - name: Install a compatible numerical stack
         run: python -m pip install -r requirements-reproduction.txt
       - name: Run deterministic simulations
         run: python code/zero_atom_checks.py --outdir results/generated
-      - name: Verify results
+      - name: Verify deterministic identities
         run: python code/verify_zero_atom_results.py results/generated/zero_atom_results.json
       - name: Upload diagnostics
         uses: actions/upload-artifact@v7
         with:
           name: numerical-diagnostics
           path: results/generated/
+          if-no-files-found: error

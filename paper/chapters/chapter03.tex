@@ -1,0 +1,293 @@
+\section{Bulk law, exact scaling, and the zero atom}
+
+The source bulk theorem already permits exact zero weights because its bulk
+part assumes only low-dimensional coupling, not invertibility
+\cite{BenArousEtAl2025}. For completeness, and to avoid using any unproved
+continuity statement for a varying aspect ratio, we derive the bulk here
+from Proposition~\ref{S:marked-theorem} and the exact active reduction.
+Under the active law
+\eqref{S:active-law}, set
+\begin{equation}
+T=h_b(g),\qquad V=m_b+\lambda^{-1/2}g,\qquad c=\phi\pi.
+\end{equation}
+Let $s_+$ solve
+\begin{equation}
+1+xs_+(x)
+=
+c\,\E_+\!\left[
+\frac{s_+(x)T}{\lambda c+s_+(x)T}
+\right].
+\label{S:active-fixed}
+\end{equation}
+Define
+\begin{equation}
+S(z)=\frac1\pi s_+\!\left(\frac z\pi\right).
+\label{S:Sscale}
+\end{equation}
+Since
+\begin{equation}
+\E_+[f(b,g)]
+=
+\frac1\pi\sum_bp_b
+\E\!\left[\1_{\{h_b(g)>0\}}f(b,g)\right],
+\end{equation}
+substitution in \eqref{S:active-fixed} yields \eqref{S:fixedpoint}. Inactive terms vanish because the numerator is zero; no inverse of zero is used.
+
+On the event $N_d\ge1$, let $\mu_d^+$ be the empirical spectral measure
+of $\widehat M_d$; set $\mu_d^+=\delta_0$ when $N_d=0$.  Fix a metric
+$d_{\mathrm{BL}}$ that metrizes weak convergence of probability measures.
+For each $\eta>0$, apply Lemma~\ref{S:random-index-lemma} to
+\begin{equation}
+r_{d,m}(\eta)
+=
+\Pp\!\left\{
+ d_{\mathrm{BL}}(\mu_{d,m}^+,\nu_+)>\eta
+\right\},
+\end{equation}
+where $\mu_{d,m}^+$ is the active empirical law with deterministic sample
+size $m$.  Proposition~\ref{S:marked-theorem} makes
+$r_{d,m_d}(\eta)\to0$ for every deterministic $m_d/d\to\phi\pi$.
+Since $\Pp\{N_d=0\}=(1-\pi)^n\to0$, the random-index lemma gives
+\begin{equation}
+\mu_d^+\Longrightarrow\nu_+
+\quad\text{in probability}.
+\label{S:active-bulk-convergence}
+\end{equation}
+Since $M_d=\alpha_d\widehat M_d$ and $\alpha_d\to\pi$, let $f$ be a
+bounded Lipschitz test function with Lipschitz constant $L_f$.  Use the
+deterministic test function $x\mapsto f(\pi x)$ and write
+\begin{align}
+\left|\int f\,d\mu_{M_d}-\int f(\pi x)\,\nu_+(dx)\right|
+\le{}&
+\left|\int f(\pi x)\,[\mu_d^+-\nu_+](dx)\right|\notag\\
+&+L_f|\alpha_d-\pi|\int |x|\,\mu_d^+(dx).
+\label{S:bulk-BL-transfer}
+\end{align}
+The first term tends to zero in probability by
+\eqref{S:active-bulk-convergence}. The second does as well because the
+active matrix is positive semidefinite and its normalized trace is tight.
+Indeed, conditional on $N_d=m\ge1$, the $m$ active columns are i.i.d.
+with law $\Pp_+$, so
+\begin{align}
+\E\!\left[\frac1d\Tr\widehat M_d\,\middle|\,N_d=m\right]
+&=\frac1d\E_+[T\|Y\|^2]\notag\\
+&\le \frac{M}{d}
+\left(\E_+\|V\|^2+\frac{d-q}{\lambda}\right)
+\le C.
+\label{S:active-trace-bound}
+\end{align}
+The constant $C$ is independent of $d$ and $m$; the active moments are
+finite because conditioning a Gaussian vector on an event of probability
+$\pi>0$ preserves every finite moment.  Markov's inequality gives
+$\int|x|\,\mu_d^+(dx)=O_{\Pp}(1)$, while
+$|\alpha_d-\pi|=o_{\Pp}(1)$. Thus the right side of
+\eqref{S:bulk-BL-transfer} vanishes in probability. Hence
+\begin{equation}
+\nu_G=(x\mapsto\pi x)_\#\nu_+,
+\qquad
+\supp\nu_G=\pi\,\supp\nu_+,
+\qquad
+\lambda_+(G)=\pi\lambda_{+,+}.
+\label{S:pushforward}
+\end{equation}
+The transform of this pushforward maps $\C_+$ to $\C_+$ and has
+$zS(z)\to-1$; the source bulk theorem's uniqueness clause therefore
+identifies it with the physical solution of \eqref{S:fixedpoint}. The support
+and right-edge
+relations are exact consequences of the pushforward, not consequences of
+weak convergence alone.
+
+For the effective matrix,
+\begin{equation}
+F_+(x)=
+\lambda c\,\E_+\!\left[
+\frac{T}{\lambda c+s_+(x)T}VV^{\mathsf T}
+\right].
+\end{equation}
+Using $c=\phi\pi$ and \eqref{S:Sscale},
+\begin{equation}
+F_G(z)=\pi F_+\!\left(\frac z\pi\right),
+\label{S:Fscale}
+\end{equation}
+which expands exactly to \eqref{S:F}. Hence
+\begin{equation}
+\det B_G(z)
+=
+\pi^q\det\!\left[
+\frac z\pi I_q-F_+\!\left(\frac z\pi\right)
+\right].
+\label{S:detscale}
+\end{equation}
+Roots and analytic multiplicities correspond bijectively under $z=\pi x$.
+
+\section{Exact rank and kernel}
+
+\begin{lemma}[General position of active columns]
+Conditioned on activity, each $Y_\ell$ has an absolutely continuous law on $\R^d$. Independent active columns are in general linear position almost surely.
+\end{lemma}
+
+\begin{proof}
+Under \eqref{S:active-law}, $g$ has a density on its active set, and $w$ remains a full standard Gaussian. For each class $b$, the affine orthogonal map
+\begin{equation}
+(g,w)\mapsto
+L_d(m_b+\lambda^{-1/2}g)
++\lambda^{-1/2}L_d^\perp w
+\end{equation}
+has nonsingular linear part. Its image law is absolutely continuous on $\R^d$. Inductively, conditioned on the first $r<d$ active columns, their span is a proper linear subspace and hence has Lebesgue measure zero. The next active column avoids it almost surely.
+\end{proof}
+
+Therefore
+\begin{equation}
+\rank A_{+,d}=\min(d,N_d)\quad\text{a.s.}
+\end{equation}
+Since $D_{+,d}^{1/2}$ is invertible,
+\begin{equation}
+\rank M_d
+=\rank(A_{+,d}D_{+,d}^{1/2})
+=\min(d,N_d)
+\end{equation}
+almost surely. Equation \eqref{S:nullity} follows from \eqref{S:active-ratios}. The exact zeros are the finite-dimensional realization of the atom \eqref{S:zeroatom}; they are not positive outliers.
+
+\subsection{Identification of the zero atom}
+
+\begin{lemma}[Zero mass]
+\label{S:zero-mass-lemma}
+The limiting measure satisfies \eqref{S:zeroatom}.
+\end{lemma}
+
+\begin{proof}
+The exact rank identity above gives
+\begin{equation}
+\mu_{M_d}(\{0\})
+=
+\frac1d\dim\Ker M_d
+\longrightarrow(1-\phi\pi)_+
+\quad\text{almost surely}.
+\end{equation}
+To pass this to the deterministic weak limit, take an arbitrary subsequence and then a further
+subsequence along which the empirical measures converge weakly almost surely. Portmanteau's
+inequality for the closed set $\{0\}$ gives
+\begin{equation}
+\nu_G(\{0\})
+\ge\limsup_d\mu_{M_d}(\{0\})
+=(1-\phi\pi)_+.
+\end{equation}
+Since every subsequence admits such a further subsequence, the lower bound holds for the
+deterministic limit.
+
+Let $m_0=\nu_G(\{0\})$. For $t\downarrow0$,
+\begin{equation}
+tS_G(-t)\longrightarrow m_0.
+\end{equation}
+If $m_0>0$, then $S_G(-t)\to+\infty$.  For $t>0$ one has
+$S_G(-t)>0$ and, because $h_b\ge0$,
+\begin{equation}
+0\le
+\frac{S_G(-t)h_b(g)}{\lambda\phi+S_G(-t)h_b(g)}
+\le\1_{\{h_b(g)>0\}}.
+\end{equation}
+On the active event the fraction converges to one, while it is identically
+zero on the inactive event.  Dominated convergence in
+\eqref{S:fixedpoint}, together with $tS_G(-t)\to m_0$, therefore gives
+\begin{equation}
+1-m_0=\phi\sum_bp_b\Pp\{h_b(g)>0\}=\phi\pi.
+\end{equation}
+Thus $m_0=1-\phi\pi$ when $\phi\pi<1$. If $\phi\pi\ge1$, a positive $m_0$ would imply $1-m_0=\phi\pi\ge1$, which is impossible. Therefore $m_0=(1-\phi\pi)_+$.
+\end{proof}
+
+
+\section{Analyticity and root multiplicity}
+
+Let $K\subset(\lambda_+(G),\infty)$ be compact. Under the dilation
+\eqref{S:pushforward}, $K/\pi$ is a compact subset of the right component of
+the active complement. The support-map argument in the proof of
+Proposition~\ref{S:marked-theorem} gives
+\begin{equation}
+\inf_{\substack{x\in K/\pi\\t\in\supp\rho}}
+|\lambda c+s_+(x)t|>0.
+\end{equation}
+Since the active law is supported on $t=h_b(g)>0$, the scaling relations
+\eqref{S:Sscale}--\eqref{S:Fscale} give \eqref{S:denominator}.
+The Stieltjes transform is holomorphic off the support, and the uniform
+denominator bound permits differentiation under the expectation in
+\eqref{S:F}. Thus $S_G$, $F_G$, and $B_G$ extend holomorphically to a
+complex neighborhood of $K$.
+
+For real $z>\lambda_+$,
+\begin{equation}
+S_G'(z)=\int\frac{\nu_G(dx)}{(x-z)^2}>0.
+\label{S:Sprime}
+\end{equation}
+Differentiating \eqref{S:F},
+\begin{equation}
+F_G'(z)=
+-\lambda\phi S_G'(z)\sum_bp_b\E\!\left[
+\frac{h_b(g)^2v_b(g)v_b(g)^{\mathsf T}}
+{[\lambda\phi+S_G(z)h_b(g)]^2}
+\right]\preceq0.
+\label{S:Fprime}
+\end{equation}
+Hence
+\begin{equation}
+B_G'(z)=I_q-F_G'(z)\succeq I_q.
+\label{S:Bprime}
+\end{equation}
+Every ordered eigenvalue of the Hermitian matrix $B_G(z)$ is strictly increasing, so each can cross zero at most once and the sum of root multiplicities is at most $q$.
+
+Let $z_*$ be a root and $K_*=\Ker B_G(z_*)$, $\dim K_*=m$. In the orthogonal decomposition $K_*\oplus K_*^\perp$,
+\begin{equation}
+B_G(z_*+t)=
+\begin{bmatrix}
+tJ_*+O(t^2)&tC+O(t^2)\\
+tC^{\mathsf T}+O(t^2)&B_{22}+O(t)
+\end{bmatrix},
+\end{equation}
+where $B_{22}$ is invertible and
+\begin{equation}
+J_*=\left.P_*B_G'(z_*)P_*\right|_{K_*}\succ0.
+\end{equation}
+The Schur complement on $K_*$ equals $tJ_*+O(t^2)$, and therefore
+\begin{equation}
+\det B_G(z_*+t)
+=
+\det(B_{22})\,t^m\det(J_*)+O(t^{m+1}).
+\end{equation}
+This proves \eqref{S:multiplicity}.
+
+
+\section{Empirical outlier counts}
+
+Fix $I=[a,b]$ as in Theorem~\ref{S:main}. In the active scaling the limiting interval is
+\begin{equation}
+I_+=\left[\frac a\pi,\frac b\pi\right].
+\end{equation}
+By \eqref{S:pushforward} and \eqref{S:detscale}, its endpoints are outside the active bulk and are
+not active effective roots. Choose $\eta>0$ so that the two closed strips
+\begin{equation}
+\left[\frac a\pi-\eta,\frac a\pi+\eta\right],
+\qquad
+\left[\frac b\pi-\eta,\frac b\pi+\eta\right]
+\label{S:endpoint-strips}
+\end{equation}
+meet neither the active bulk nor an active root. For every deterministic sequence $m_d/d\to c$,
+Proposition~\ref{S:marked-theorem} gives the desired count on $I_+$ and gives zero eigenvalues in
+the two strips \eqref{S:endpoint-strips}, with failure probability tending to zero. The
+random-index lemma transfers these three assertions to $N_d$.
+
+On the event $|\alpha_d-\pi|$ is sufficiently small, the random endpoints
+$a/\alpha_d$ and $b/\alpha_d$ lie in the corresponding strips. Since there are no active
+eigenvalues in the portions swept out by those endpoints,
+\begin{align}
+\#\{\sigma(M_d)\cap[a,b]\}
+&=
+\#\left\{\sigma(\widehat M_d)\cap
+\left[\frac a{\alpha_d},\frac b{\alpha_d}\right]\right\}\\
+&=
+\#\left\{\sigma(\widehat M_d)\cap
+\left[\frac a\pi,\frac b\pi\right]\right\}.
+\label{S:scaled-count}
+\end{align}
+Equation \eqref{S:detscale} identifies the final active root count with the roots of
+$\det B_G$ in $[a,b]$, including analytic multiplicity. This proves \eqref{S:count} without
+assuming a theorem for random moving endpoints.
+
