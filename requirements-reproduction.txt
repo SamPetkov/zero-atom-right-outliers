@@ -1,4 +1,6 @@
-# Versions used for the recorded run in results/zero_atom_results.json
-numpy==2.3.5
-scipy==1.17.0
-matplotlib==3.10.8
+# Compatible versions for reproducing the recorded deterministic checks.
+# Exact versions used for the archived run remain recorded in
+# results/zero_atom_results.json.
+numpy>=2.3,<3
+scipy>=1.16,<2
+matplotlib>=3.10,<4
