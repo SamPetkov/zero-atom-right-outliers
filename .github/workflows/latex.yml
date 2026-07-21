@@ -1,8 +1,8 @@
-name: Build LaTeX PDFs
+name: Build unified manuscript
 
 on:
-  push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -12,20 +12,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Compile Letter and Supplemental Material
+      - name: Compile the unified REVTeX manuscript
         uses: xu-cheng/latex-action@v4
         with:
-          root_file: |
-            main.tex
-            supplement.tex
+          root_file: main.tex
           working_directory: paper
           work_in_root_file_dir: true
           texlive_version: 2026
           os: debian
-      - name: Upload PDFs
+      - name: Validate the compiled manuscript
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s paper/main.pdf
+          test -f paper/main.log
+          if grep -Eq 'LaTeX Warning: (There were undefined references|Citation .* undefined|Reference .* undefined)' paper/main.log; then
+            echo 'The LaTeX build contains unresolved citations or references.' >&2
+            exit 1
+          fi
+          if grep -q 'Overfull \\hbox' paper/main.log; then
+            echo 'The LaTeX build contains an overfull box.' >&2
+            exit 1
+          fi
+      - name: Upload the checked manuscript PDF
         uses: actions/upload-artifact@v7
         with:
-          name: manuscript-pdfs
-          path: |
-            paper/main.pdf
-            paper/supplement.pdf
+          name: unified-manuscript
+          path: paper/main.pdf
+          if-no-files-found: error
