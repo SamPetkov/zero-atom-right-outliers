@@ -1,0 +1,343 @@
+\section{Existence and absence of spurious right outliers}
+
+Let $z_*$ be an isolated effective root of multiplicity $m$. Choose
+$\delta_0>0$ so that
+$[z_*-\delta_0,z_*+\delta_0]$ meets neither the bulk nor another root and
+its endpoints are not roots. The count theorem gives exactly $m$
+eigenvalues in this interval with probability tending to one. For every
+$0<\eta<\delta_0$, the smaller interval
+$[z_*-\eta,z_*+\eta]$ has the same limiting count $m$. On the intersection
+of these two high-probability count events, all $m$ eigenvalues in the
+larger interval lie in the smaller one. Hence all of them converge in
+probability to $z_*$. This proves the existence assertion before it is used
+below.
+
+The spectrum also admits a deterministic high-probability bound. Indeed,
+\begin{equation}
+0\preceq M_d\preceq\frac{M}{n}A_dA_d^{\mathsf T}.
+\end{equation}
+Write $A_d=Z_d+\mathcal M_d$, where $Z_d$ has independent
+$N(0,\lambda^{-1})$ entries and the columns of $\mathcal M_d$ are class
+means. The Gaussian operator-norm inequality \cite{DavidsonSzarek2001}
+\begin{equation}
+\Pp\!\left\{
+\|Z_d\|>
+\lambda^{-1/2}(\sqrt n+\sqrt d+t)
+\right\}
+\le 2e^{-t^2/2}
+\end{equation}
+with $t=\sqrt d$ and $n/d\to\phi$ gives a deterministic $C_Z<\infty$ such
+that $\Pp\{\|Z_d\|/\sqrt n\le C_Z\}\to1$. Moreover,
+\begin{equation}
+\frac{\|\mathcal M_d\|}{\sqrt n}
+\le
+\frac{\|\mathcal M_d\|_{\mathrm F}}{\sqrt n}
+\le\max_b\|\mu_b^{(d)}\|
+=
+\max_b\sqrt{G_{C+b,C+b}}=:C_\mu.
+\end{equation}
+Thus, for
+\begin{equation}
+K_0=M(C_Z+C_\mu)^2,
+\end{equation}
+\begin{equation}
+\Pp\{\|M_d\|\le K_0\}\longrightarrow1.
+\label{S:norm-tight}
+\end{equation}
+
+Also, $S_G(z)=-z^{-1}+o(z^{-1})$ and therefore
+\begin{equation}
+F_G(z)\longrightarrow
+\sum_{b=1}^kp_b\E[h_b(g)v_b(g)v_b(g)^{\mathsf T}]
+\quad(z\to+\infty).
+\end{equation}
+Thus $F_G$ remains bounded while $zI_q$ diverges. There is a deterministic
+$K_1$ beyond which $B_G(z)$ is positive definite, so all right effective
+roots lie below $K_1$.
+
+Fix $\epsilon>0$ and put $K=\max(K_0,K_1)+1$. We prove
+\eqref{S:no-spurious} by its defining $\eta$-criterion. Let $\eta>0$ and
+let
+\begin{equation}
+\mathcal Z_{\epsilon,K}
+=
+\{z\in[\lambda_++\epsilon,K]:\det B_G(z)=0\}.
+\end{equation}
+The set is finite. Choose pairwise disjoint neighborhoods of its points,
+each of radius smaller than $\eta$. The compact remainder of
+$[\lambda_++\epsilon,K]$ is a finite union of closed root-free intervals
+after moving finitely many interval endpoints, if necessary, so that none
+is a root. The count theorem gives no empirical eigenvalues in this
+remainder with probability tending to one.
+
+On the event $\|M_d\|\le K_0<K$, every empirical eigenvalue above
+$\lambda_++\epsilon$ lies in $[\lambda_++\epsilon,K]$.  The preceding
+compact-remainder argument therefore already accounts for the entire
+relevant spectrum; no prior assignment of an empirical eigenvalue to a
+limiting root is needed.  If $\mathcal Z_{\epsilon,K}\ne\varnothing$ then
+\begin{equation}
+\Pp\!\left\{
+\sup_{\substack{x\in\sigma(M_d)\\x>\lambda_++\epsilon}}
+\dist(x,\mathcal Z_{\epsilon,K})>\eta
+\right\}\longrightarrow0,
+\end{equation}
+which is \eqref{S:no-spurious}. If
+$\mathcal Z_{\epsilon,K}=\varnothing$, the compact-remainder argument
+instead gives directly
+\begin{equation}
+\Pp\{\sigma(M_d)\cap(\lambda_++\epsilon,\infty)=\varnothing\}
+\longrightarrow1,
+\end{equation}
+which is \eqref{S:no-spurious-empty}.
+
+
+\section{Simple-root eigenvectors}
+
+Let $z_d$ be an empirical eigenvalue converging to a simple root $z_*$ of
+the original problem, let $u_d$ be a corresponding unit eigenvector, and
+put
+\begin{equation}
+x_d=\frac{z_d}{\alpha_d},
+\qquad
+r_d=L_d^{\mathsf T}u_d.
+\end{equation}
+On the event $N_d\ge1$, \eqref{S:activeidentity} says that $x_d$ is an
+eigenvalue of $\widehat M_d$ with the same eigenvector. The orthogonal
+weighted-Wishart block has no eigenvalue in a fixed neighborhood of the
+isolated active root with probability tending to one. On that event,
+Lemma~\ref{S:exact-schur-lemma} gives the \emph{exact} identities
+\begin{equation}
+Q_{N_d}(x_d)r_d=0,
+\qquad
+r_d^{\mathsf T}Q_{N_d}'(x_d)r_d=1.
+\label{S:active-exact-evec}
+\end{equation}
+Proposition~\ref{S:marked-theorem} and the random-index lemma give locally
+uniform convergence of $Q_{N_d}$ and its derivative to the active
+deterministic matrix $B_+$. Therefore
+\begin{align}
+\|B_+(x_d)r_d\|&=o_{\Pp}(1),\label{S:active-evec}\\
+\left|r_d^{\mathsf T}B_+'(x_d)r_d-1\right|&=o_{\Pp}(1).
+\label{S:active-evec-norm}
+\end{align}
+
+The exact deterministic scaling is
+\begin{equation}
+B_G(z)=\pi B_+\!\left(\frac z\pi\right),
+\qquad
+B_G'(z)=B_+'\!\left(\frac z\pi\right).
+\label{S:B-scaling}
+\end{equation}
+It is not legitimate simply to replace the random $\alpha_d$ by $\pi$
+inside the active equation. Using $z_d=\alpha_dx_d$, the required error is
+decomposed exactly as
+\begin{align}
+B_G(z_d)r_d
+={}&
+\pi B_+(x_d)r_d
++(\alpha_d-\pi)x_dr_d \notag\\
+&+\pi\left[
+F_+(x_d)-F_+\!\left(\frac{\alpha_d}{\pi}x_d\right)
+\right]r_d.
+\label{S:evec-error-decomposition}
+\end{align}
+Here $\|r_d\|\le1$, the eigenvalues $x_d$ remain in a fixed compact right
+set, and $F_+$ is locally Lipschitz there. Equations
+\eqref{S:active-ratios}, \eqref{S:active-evec}, and
+\eqref{S:evec-error-decomposition} prove \eqref{S:evec1}. The derivative
+version follows from
+\begin{equation}
+B_G'(z_d)-B_+'(x_d)
+=
+B_+'\!\left(\frac{\alpha_d}{\pi}x_d\right)-B_+'(x_d),
+\end{equation}
+the local Lipschitz continuity of $B_+'$, and
+\eqref{S:active-evec-norm}. This proves \eqref{S:evec2}.
+
+By \eqref{S:multiplicity}, $\Ker B_G(z_*)$ is one-dimensional. On a compact
+neighborhood of $z_*$, continuity gives $\sup_z\|B_G'(z)\|<\infty$; together
+with \eqref{S:evec2}, this bounds $\|r_d\|$ away from zero with probability
+tending to one. To make the final convergence precise, take an arbitrary
+subsequence. Tightness in the compact unit ball gives a further subsequence
+converging in distribution to a random vector $R$. Slutsky's theorem applied
+to \eqref{S:evec1} and \eqref{S:evec2} gives, almost surely under the limiting
+law,
+\begin{equation}
+B_G(z_*)R=0,
+\qquad
+R^{\mathsf T}B_G'(z_*)R=1.
+\end{equation}
+After the sign convention $\langle r_d,e_*\rangle\ge0$, these conditions
+have the unique solution shown in \eqref{S:eveclimit}. Thus every
+subsequential distributional limit is the same point mass. Convergence in
+distribution to a constant is convergence in probability, proving
+\eqref{S:eveclimit}.
+
+
+\section{Multiple roots and spectral projections}
+\label{S:multiple-section}
+
+Let $z_*$ have multiplicity $m>1$. Choose a positively oriented contour
+$\Gamma$ enclosing $z_*$ and no other effective root or bulk point. By
+\eqref{S:pushforward} and \eqref{S:detscale}, $\Gamma/\pi$ encloses the
+corresponding active root and is separated from the active bulk and all
+other active roots.
+
+Choose a sufficiently thin compact tubular neighborhood $U'$ of the
+\emph{curve} $\Gamma/\pi$.  Because that curve has positive distance from
+the active bulk and from every active root, one may choose an open annular
+neighborhood $U\supset U'$ with $U'\Subset U$ whose closure meets neither
+the active bulk nor a root.  The root enclosed by $\Gamma/\pi$ lies in the
+interior of the contour, not in this annular neighborhood.  Hence $B_+^{-1}$
+is holomorphic and bounded on $U$. For each deterministic active size,
+Proposition~\ref{S:marked-theorem} and the exact compressed-resolvent
+identity \eqref{S:exact-compressed-resolvent} give uniformly on $U'$,
+\begin{equation}
+L_d^{\mathsf T}(\widehat M_d-xI)^{-1}L_d
++B_+(x)^{-1}
+\xrightarrow{\Pp}0.
+\label{S:active-resolvent}
+\end{equation}
+Apply Lemma~\ref{S:random-index-lemma} to the event defined by the supremum
+on $U'$. This transfers the uniform statement to the random active size
+$N_d$. The exact scalar resolvent identity
+\begin{equation}
+L_d^{\mathsf T}(M_d-zI)^{-1}L_d
+=
+\alpha_d^{-1}
+L_d^{\mathsf T}
+\left(\widehat M_d-\frac z{\alpha_d}I\right)^{-1}
+L_d
+\label{S:resolvent-scaling}
+\end{equation}
+is valid whenever $N_d\ge1$. Since $\alpha_d\to\pi$, the random contour
+$\Gamma/\alpha_d$ remains in the fixed neighborhood above. Moreover,
+\begin{equation}
+\alpha_d^{-1}B_+\!\left(\frac z{\alpha_d}\right)^{-1}
+\longrightarrow
+B_G(z)^{-1}
+\end{equation}
+uniformly on $\Gamma$, by \eqref{S:B-scaling}. Hence
+\begin{equation}
+\sup_{z\in\Gamma}
+\left\|
+L_d^{\mathsf T}(M_d-zI)^{-1}L_d+B_G(z)^{-1}
+\right\|
+\xrightarrow{\Pp}0.
+\label{S:resolvent}
+\end{equation}
+
+Let
+\begin{equation}
+\Pi_d=-\frac1{2\pi i}\oint_\Gamma(M_d-zI)^{-1}\,dz
+\end{equation}
+be the full-space spectral projection. Integrating
+\eqref{S:resolvent} gives
+\begin{equation}
+L_d^{\mathsf T}\Pi_dL_d
+\longrightarrow
+\frac1{2\pi i}\oint_\Gamma B_G(z)^{-1}\,dz.
+\label{S:projection-contour}
+\end{equation}
+The kernel/complement expansion used in the multiplicity proof gives
+\begin{equation}
+B_G(z_*+t)^{-1}
+=
+\frac1tP_*J_*^{-1}P_*+O(1).
+\end{equation}
+Its residue is $P_*J_*^{-1}P_*$, proving \eqref{S:projection}. The count
+theorem gives $\rank\Pi_d=m$ with probability tending to one. If $U_d$ is
+any orthonormal basis of $\Ran\Pi_d$ and $R_d=L_d^{\mathsf T}U_d$, then
+\begin{equation}
+R_dR_d^{\mathsf T}
+=L_d^{\mathsf T}\Pi_dL_d
+\xrightarrow{\Pp}P_*J_*^{-1}P_*.
+\end{equation}
+The range of the limiting matrix is $K_*$, but an orthonormal basis of the
+empirical eigenspace may rotate. No convergence of individual
+eigenvectors is asserted.
+
+Sections~\ref*{S:active-section}--\ref*{S:multiple-section} prove every item
+of Theorem~\ref{S:main}: the active reduction and marked theorem give the
+bulk and determinant, the random-index argument transfers the result to the
+binomial active sample size, the exact rank identifies the zero modes, and
+the final three sections give counts, exclusion of spurious outliers, and
+the simple- and multiple-root eigenspace statements.
+
+\section{ReLU-gate corollary}
+
+\begin{corollary}
+Assume
+\begin{equation}
+h_b(g)=a_b(g)\1_{\{\ell_b(g)>0\}},
+\end{equation}
+where $\ell_b$ is a nonconstant affine functional and
+\begin{equation}
+\tau\le a_b(g)\le M
+\quad\text{on }\{\ell_b(g)>0\}.
+\end{equation}
+Then Theorem~\ref{S:main} applies.
+\end{corollary}
+
+\begin{proof}
+A nonconstant affine functional of a standard Gaussian is a nondegenerate one-dimensional Gaussian, so its positive half-space has probability strictly between zero and one. The weights belong to $\{0\}\cup[\tau,M]$ almost surely.
+\end{proof}
+
+For the pure gate, fix a deterministic nonzero summary vector
+$\theta\in\R^q$ and set $w_d=L_d\theta$ (equivalently, include the ReLU
+normal among the fixed summary vectors used to construct $L_d$).  Then
+\begin{equation}
+w_d^{\mathsf T}Y_\ell
+=
+\theta^{\mathsf T}m_{b_\ell}
++\lambda^{-1/2}\theta^{\mathsf T}g_\ell,
+\end{equation}
+so the activation gate is exactly of the permitted form
+$h_b(g)=\1_{\{\ell_b(g)>0\}}$ with
+$\ell_b(g)=\theta^{\mathsf T}m_b+\lambda^{-1/2}\theta^{\mathsf T}g$.
+In particular,
+\begin{equation}
+M_d=\frac1n\sum_{\ell=1}^n
+\1_{\{w_d^{\mathsf T}Y_\ell>0\}}Y_\ell Y_\ell^{\mathsf T}.
+\end{equation}
+The exact neural interpretation is as follows. Fix a nonzero output coefficient
+$a\in\R\setminus\{0\}$ and consider one ReLU unit
+\begin{equation}
+f_w(Y)=a\,\sigma(w^{\mathsf T}Y),
+\qquad
+\sigma(t)=t_+,
+\end{equation}
+with empirical squared loss
+\begin{equation}
+\mathcal L_n(w)
+=
+\frac1n\sum_{\ell=1}^n
+\frac12\bigl(f_w(Y_\ell)-y_\ell\bigr)^2.
+\end{equation}
+At the fixed deterministic parameter $w=w_d$, every
+$w_d^{\mathsf T}Y_\ell$ has a continuous distribution, so a finite
+Gaussian sample avoids the kink almost surely. In a random neighborhood of
+that fixed $w_d$, the activation pattern is constant and
+\begin{equation}
+\nabla_w f_w(Y_\ell)
+=
+a\,\1_{\{w^{\mathsf T}Y_\ell>0\}}Y_\ell,
+\qquad
+\nabla_w^2 f_w(Y_\ell)=0.
+\end{equation}
+Consequently, at that fixed non-kink parameter,
+\begin{equation}
+\nabla_w^2\mathcal L_n(w_d)
+=
+\frac{a^2}{n}\sum_{\ell=1}^n
+\1_{\{w_d^{\mathsf T}Y_\ell>0\}}Y_\ell Y_\ell^{\mathsf T}.
+\label{S:relu-hessian}
+\end{equation}
+The same matrix is the $w$--$w$ Jacobian-Gram or Gauss--Newton block.
+Equation \eqref{S:relu-hessian} does not assert uniformity along a
+data-dependent training trajectory, does not cover a parameter at a kink,
+and does not describe cross-neuron, cross-layer, or generalized-Hessian
+blocks.  A neuron normal with a component outside the fixed summary space is
+also outside the present theorem unless that direction is first added to the
+fixed-dimensional summary family.
+
