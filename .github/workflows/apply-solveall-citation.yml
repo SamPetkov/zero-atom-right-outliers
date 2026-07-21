@@ -1,0 +1,36 @@
+name: Apply SolveAll introduction citation
+
+on:
+  push:
+    branches:
+      - agent/unified-proof-v0.4-ci
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/unified-proof-v0.4-ci
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Apply citation change
+        run: python scripts/apply_solveall_citation.py
+      - name: Validate citation
+        run: |
+          git diff --check
+          grep -Fq '\cite{SolveAllProblem}' paper/chapters/chapter01.tex
+      - name: Commit the generated change
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add paper/chapters/chapter01.tex
+          if ! git diff --cached --quiet; then
+            git commit -m 'Cite the originating SolveAll problem in the introduction'
+            git push origin HEAD:agent/unified-proof-v0.4-ci
+          fi
