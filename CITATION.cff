@@ -12,6 +12,10 @@ authors:
 repository-code: "https://github.com/SamPetkov/zero-atom-right-outliers"
 url: "https://github.com/SamPetkov/zero-atom-right-outliers"
 license: CC-BY-4.0
+identifiers:
+  - type: url
+    value: "https://www.solveall.org/problem/outlier-theory-beyond-non-degeneracyinvertibility-assumptions-relu-and-zero-diag"
+    description: "Originating SolveAll open-problem listing"
 keywords:
   - random matrix theory
   - sample covariance
