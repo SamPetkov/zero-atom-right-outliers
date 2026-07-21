@@ -1,0 +1,45 @@
+\subsection{Audit of every use of the inverse}
+
+The singular matrix $D$ from the original problem is never inverted. It is
+first split into active and inactive blocks, and the inactive block
+disappears from $ADA^{\mathsf T}$. The only inverse of a diagonal weight
+matrix in the proof is $D_{+,d}^{-1}$ inside the active weighted-Wishart
+linearization, where
+\begin{equation}
+\|D_{+,d}^{-1}\|\le\tau^{-1}.
+\end{equation}
+The exact Schur identities of Lemma~\ref{S:exact-schur-lemma} themselves do
+not require a weight inverse; they require only that the chosen spectral
+parameter avoid the orthogonal block. No Moore--Penrose inverse is used, no
+zero mode is removed from the original matrix, and the exact nullity is
+proved separately below.
+
+\section{Random active size}
+
+The marked theorem is deterministic in the active sample size. The following
+lemma transfers all of its high-probability conclusions to the binomially
+random active size without requiring a theorem uniform over all aspect ratios.
+
+\begin{lemma}[Random-index transfer]
+\label{S:random-index-lemma}
+For each $d$ and integer $m$, let $r_{d,m}\in[0,1]$ be the conditional failure probability of a
+specified active-model event under $m$ independent active marks. Suppose that
+$r_{d,m_d}\to0$ for every deterministic sequence $m_d/d\to c$. If $N_d/d\to c$ in probability,
+then
+\begin{equation}
+\E r_{d,N_d}\longrightarrow0.
+\label{S:random-index}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose $\eta_d\downarrow0$ so slowly that
+$\Pp\{|N_d/d-c|>\eta_d\}\to0$. If
+\begin{equation}
+\sup_{\substack{m\in\mathbb N\\|m/d-c|\le\eta_d}}r_{d,m}
+\end{equation}
+did not tend to zero, there would be a subsequence and integers $m_d$ in the displayed window
+with $m_d/d\to c$ but $r_{d,m_d}$ bounded away from zero, contradicting the hypothesis.
+Splitting $\E r_{d,N_d}$ on the typical and atypical events proves \eqref{S:random-index}.
+\end{proof}
+
